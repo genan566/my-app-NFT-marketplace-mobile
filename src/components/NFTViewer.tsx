@@ -13,7 +13,7 @@ const NFTViewer = ({ image }: { image?: string }) => {
         <View style={{
             width: "100%",
             minHeight: 315, maxHeight: 370, overflow: "hidden",
-            height: height * .25, position: "relative",
+            position: "relative",
             borderRadius: 10, padding: 15, marginBottom: 15
         }}>
             <Image
