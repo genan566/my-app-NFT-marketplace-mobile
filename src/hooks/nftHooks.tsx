@@ -18,6 +18,7 @@ const useNftHooks = (): {
     callingTheNestedData: (index: number) => void,
     prefixedPaginate: (it: number) => void,
     castedCount: number[],
+    loadingDataCategories: boolean,
     setCastedCount: React.Dispatch<React.SetStateAction<number[]>>
 } => {
 
@@ -29,6 +30,7 @@ const useNftHooks = (): {
     const [activePage, setActivePage] = React.useState(1)
     const [search, setSearch] = React.useState("")
     const [loadingData, setLoadingData] = React.useState(false)
+    const [loadingDataCategories, setLoadingDataCategories] = React.useState(false)
 
     const changingStateSearch = (entry: React.SetStateAction<string>) => {
         setSearch(entry)
@@ -150,14 +152,20 @@ const useNftHooks = (): {
             initial_fetching_nfts()
     }, [activeCategoriesTrending])
 
+    const loadCategories = () => {
+        setLoadingDataCategories(true)
+        let categories_trendings = new CategoriesTrendingAPI()
+        categories_trendings.get_all_categories().then(data => {
+            setLoadingDataCategories(false)
+            setCategoriesTrending(data.results)
+        })
+    }
+
     React.useEffect(() => callBackForSearch, [callBackForSearch])
 
     React.useEffect(() => {
         initial_fetching_nfts()
-        let categories_trendings = new CategoriesTrendingAPI()
-        categories_trendings.get_all_categories().then(data => {
-            setCategoriesTrending(data.results)
-        })
+        loadCategories()
     }, [])
 
     React.useEffect(() => {
@@ -194,7 +202,8 @@ const useNftHooks = (): {
             initial_fetching_nfts,
             callingTheNestedData,
             prefixedPaginate,
-            castedCount, setCastedCount
+            castedCount, setCastedCount,
+            loadingDataCategories
         }
     )
 }

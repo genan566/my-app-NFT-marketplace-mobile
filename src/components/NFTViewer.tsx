@@ -9,7 +9,7 @@ import { Feather, Ionicons } from '@expo/vector-icons';
 import { NftsInterface } from '../types/NFTsInterface'
 import { SaleHistoriesAPI } from '../APIs/SaleHistoriesAPI'
 import { SaleHistory } from '../types/SaleHistoryType'
-const NFTViewer = ({ data }: { data: any, }) => {
+const NFTViewer = ({ data, callActionView }: { data: any, callActionView: () => void }) => {
     const { height } = useDimensionSizes()
     const { loaded } = useLoadingFonts()
     const [saleHistories, setSaleHistories] = React.useState<SaleHistory[]>([])
@@ -109,7 +109,9 @@ const NFTViewer = ({ data }: { data: any, }) => {
                             </View>
                         </BlurView>
                     </View>
-                    <TouchableOpacity style={{ backgroundColor: "white", padding: 10, borderRadius: 100 }}>
+                    <TouchableOpacity
+                        onPress={callActionView}
+                        style={{ backgroundColor: "white", padding: 10, borderRadius: 100 }}>
                         <Feather name="chevron-right" size={15} color="black" />
                     </TouchableOpacity>
                 </View>
