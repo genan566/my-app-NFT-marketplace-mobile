@@ -10,6 +10,7 @@ import useNftHooks from '../hooks/nftHooks'
 import SwipeUpDown from 'react-native-swipe-up-down';
 import { Icon } from '@ui-kitten/components'
 import { blurhash } from '../../utilities/Hasher'
+import ViewHiddenOfNFt from '../components/CustomSwipeableContent'
 
 const WIDTH = Dimensions.get("screen").width;
 const HEIGHT = Dimensions.get("screen").height;
@@ -45,156 +46,6 @@ const HomeScreen = ({ navigation }) => {
     };
 
 
-    const ViewHiddenOfNFt = () => {
-        return (
-            <RootComponent>
-
-                <View style={{ position: "relative", }}>
-                    <View style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        paddingHorizontal: 25,
-                        position: "absolute",
-                        top: 25,
-                        zIndex: 2,
-                        width: "100%",
-                    }}>
-                        <TouchableOpacity
-                            onPress={() => {
-                                console.log(swipeUpDownRef.current.showMini())
-                            }}
-                            activeOpacity={.8}
-                            style={{
-                                borderRadius: 50,
-                                overflow: "hidden",
-                                width: 35, height: 35,
-                                position: "relative",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                position: "relative",
-                                backgroundColor: "rgba(82, 82, 79,.8)"
-                            }}
-                        >
-
-                            <Icon name="close-circle-outline"
-                                style={{
-                                    width: 20,
-                                    height: 20,
-                                    tintColor: "rgb(99, 102, 241)",
-                                    alignSelf: 'center',
-                                }} />
-                        </TouchableOpacity>
-
-                        <Text style={{ fontFamily: loaded && "Montserrat-Medium", fontSize: 22.5, color: "white", }}>Detail Product NFT</Text>
-
-                        <TouchableOpacity
-                            activeOpacity={.8}
-                            style={{
-                                borderRadius: 50,
-                                overflow: "hidden",
-                                width: 35, height: 35,
-                                position: "relative",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                position: "relative",
-                                backgroundColor: "rgba(82, 82, 79,.8)"
-                            }}
-                        >
-
-                            <Icon name="edit"
-                                style={{
-                                    width: 20,
-                                    height: 20,
-                                    tintColor: "white",
-                                    alignSelf: 'center',
-                                }} />
-                        </TouchableOpacity>
-                    </View>
-
-                    <ScrollView contentContainerStyle={{ paddingHorizontal: 20, marginTop: 95 }}>
-                        <TouchableHighlight>
-                            <Image
-                                style={{ height: HEIGHT * .4, width: "100%" }}
-                                source={require("../../assets/images/1.png")}
-                                placeholder={blurhash}
-                                // contentFit="cover"
-                                resizeMode='cente'
-                                transition={1000}
-                            />
-
-                        </TouchableHighlight>
-                        <View style={{
-                            flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 20,
-
-                        }}>
-                            <View style={{ borderWidth: 1, borderColor: "rgba(100,100,100,.5)", borderRadius: 100, overflow: "hidden", }}>
-                                <Image
-                                    style={{ height: 50, width: 50 }}
-                                    source={require("../../assets/images/1.png")}
-                                    placeholder={blurhash}
-                                    // contentFit="cover"
-                                    resizeMode='cente'
-                                    transition={1000}
-                                />
-
-                            </View>
-                            <TouchableOpacity style={{ backgroundColor: "rgb(50,50,50)", borderRadius: 100, padding: 10 }}
-                            >
-
-                                <Icon name="heart"
-                                    style={{
-                                        width: 20,
-                                        height: 20,
-                                        tintColor: "red",
-                                        alignSelf: 'center',
-                                    }} />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 20, gap: 10 }}>
-                            <View style={{ overflow: "hidden", backgroundColor: "rgba(82, 82, 79,.8)", borderRadius: 100 }}>
-                                <View style={{
-                                    padding: 8, paddingHorizontal: 20, elevation: 10, display: "flex",
-                                    justifyContent: 'space-between', flexDirection: "row", alignItems: "center"
-                                }}>
-                                    <View style={{
-                                        display: "flex",
-                                        justifyContent: 'space-between', flexDirection: "row", gap: 10, alignItems: "center"
-                                    }}>
-                                        <Feather name="layers" size={24} color="white" />
-                                        <View>
-                                            <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: loaded && "Montserrat-Medium", }}>Current Bid</Text>
-                                            <Text style={{ color: "white", fontFamily: loaded && "Montserrat-SemiBold", fontSize: 20, marginTop: 2.5 }}>{data.price}ETH</Text>
-                                        </View>
-                                    </View>
-                                </View>
-                            </View>
-                            <View style={{ overflow: "hidden", backgroundColor: "rgba(82, 82, 79,.8)", borderRadius: 100 }}>
-                                <View style={{
-                                    padding: 8, paddingHorizontal: 20, elevation: 10, display: "flex",
-                                    justifyContent: 'space-between', flexDirection: "row", alignItems: "center"
-                                }}>
-                                    <View style={{
-                                        display: "flex",
-                                        justifyContent: 'space-between', flexDirection: "row", gap: 10, alignItems: "center"
-                                    }}>
-                                        <Feather name="clock" size={24} color="white" />
-                                        <View>
-                                            <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: loaded && "Montserrat-Medium", }}>Ending In</Text>
-                                            <Text style={{ color: "white", fontFamily: loaded && "Montserrat-SemiBold", fontSize: 20, marginTop: 2.5 }}>2h 35min</Text>
-                                        </View>
-                                    </View>
-                                </View>
-                            </View>
-                        </View>
-                    </ScrollView>
-                </View>
-            </RootComponent>
-        )
-    }
 
     return (
 
@@ -207,7 +58,7 @@ const HomeScreen = ({ navigation }) => {
 
 
             <SwipeUpDown
-                itemFull={(hide: any) => <ViewHiddenOfNFt style={{ height: "100%" }} hide={hide} />}
+                itemFull={(hide: any) => <ViewHiddenOfNFt callAction={() => swipeUpDownRef.current.showMini()} style={{ height: "100%" }} hide={hide} />}
                 ref={swipeUpDownRef}
                 onShowMini={() => console.log('mini')}
                 onShowFull={() => console.log('full')}
