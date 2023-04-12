@@ -95,7 +95,7 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                             source={nFTContext.nftData.image ? { uri: nFTContext.nftData.image } : require("../../assets/images/1.png")}
                             placeholder={blurhash}
                             // contentFit="cover"
-                            resizeMode='cente'
+                            resizeMode='center'
                             transition={1000}
                         />
 
@@ -104,20 +104,20 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                         flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 20,
 
                     }}>
-                        <View style={{ borderWidth: 1, borderColor: "rgba(100,100,100,.5)", borderRadius: 100, overflow: "hidden", }}>
-                            <Image
-                                style={{ height: 50, width: 50 }}
-                                source={require("../../assets/images/1.png")}
-                                placeholder={blurhash}
-                                // contentFit="cover"
-                                resizeMode='cente'
-                                transition={1000}
-                            />
-
+                        <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                            <View style={{ borderWidth: 1, borderColor: "rgba(100,100,100,.5)", borderRadius: 100, overflow: "hidden", }}>
+                                <Image
+                                    style={{ height: 50, width: 50 }}
+                                    source={require("../../assets/images/1.png")}
+                                    placeholder={blurhash}
+                                    // contentFit="cover"
+                                    resizeMode='center'
+                                    transition={1000}
+                                />
+                            </View>
                         </View>
                         <TouchableOpacity style={{ backgroundColor: "rgb(50,50,50)", borderRadius: 100, padding: 10 }}
                         >
-
                             <Icon name="heart"
                                 style={{
                                     width: 20,
@@ -128,7 +128,7 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                         </TouchableOpacity>
                     </View>
                     <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 20, gap: 10 }}>
-                        <View style={{ overflow: "hidden", backgroundColor: "rgba(82, 82, 79,.8)", borderRadius: 100 }}>
+                        <TouchableHighlight style={{ overflow: "hidden", backgroundColor: "rgba(82, 82, 79,.8)", borderRadius: 100 }}>
                             <View style={{
                                 padding: 8, paddingHorizontal: 20, elevation: 10, display: "flex",
                                 justifyContent: 'space-between', flexDirection: "row", alignItems: "center"
@@ -144,8 +144,8 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                                     </View>
                                 </View>
                             </View>
-                        </View>
-                        <View style={{ overflow: "hidden", backgroundColor: "rgba(82, 82, 79,.8)", borderRadius: 100 }}>
+                        </TouchableHighlight>
+                        <TouchableHighlight style={{ overflow: "hidden", backgroundColor: "rgba(82, 82, 79,.8)", borderRadius: 100 }}>
                             <View style={{
                                 padding: 8, paddingHorizontal: 20, elevation: 10, display: "flex",
                                 justifyContent: 'space-between', flexDirection: "row", alignItems: "center"
@@ -161,7 +161,7 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                                     </View>
                                 </View>
                             </View>
-                        </View>
+                        </TouchableHighlight>
                     </View>
 
                     {/* <Tab.Navigator>
@@ -177,7 +177,7 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                             // }}
                             style={{
                                 backgroundColor: "white", display: "flex",
-                                justifyContent: "center", alignItems: "center", padding: 8, borderRadius: 5, flexDirection: "row",
+                                justifyContent: "center", alignItems: "center", padding: 12.5, borderRadius: 5, flexDirection: "row",
                             }}>
 
                             {/* {
@@ -189,7 +189,7 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                         } */}
 
                             <Text style={{
-                                color: "black", fontSize: 16,
+                                color: "black", fontSize: 18,
                                 fontFamily: "Montserrat-Medium",
                             }}>Place a Bid</Text>
                             {/* <Icon name="log-in-outline"
@@ -208,7 +208,7 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                                 borderBottomWidth: activePage === 0 ? 1 : 0,
                             }}>
                             <Text style={{
-                                color: "white", textAlign: "center",
+                                color: activePage === 0 ? "white" : "rgb(150,150,150)", textAlign: "center",
                                 fontFamily: loaded && "Montserrat-SemiBold",
                             }}>Details</Text>
                         </TouchableOpacity>
@@ -220,7 +220,7 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                                 borderBottomWidth: activePage === 1 ? 1 : 0,
                             }}>
                             <Text style={{
-                                color: "white", textAlign: "center",
+                                color: activePage === 1 ? "white" : "rgb(150,150,150)", textAlign: "center",
                                 fontFamily: loaded && "Montserrat-SemiBold",
                             }}>Owners</Text>
                         </TouchableOpacity>
@@ -232,17 +232,19 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                                 borderBottomWidth: activePage === 2 ? 1 : 0,
                             }}>
                             <Text style={{
-                                color: "white", textAlign: "center",
+                                color: activePage === 2 ? "white" : "rgb(150,150,150)", textAlign: "center",
                                 fontFamily: loaded && "Montserrat-SemiBold",
                             }}>History</Text>
                         </TouchableOpacity>
                     </View>
 
-                    {
-                        activePage === 0 ? <Detail /> :
-                            activePage === 1 ? <Owners /> :
-                                <Histories />
-                    }
+                    <View style={{ marginTop: 20 }}>
+                        {
+                            activePage === 0 ? <Detail /> :
+                                activePage === 1 ? <Owners /> :
+                                    <Histories />
+                        }
+                    </View>
 
                     <View style={{ marginBottom: HEIGHT * .3 }} />
                 </ScrollView>

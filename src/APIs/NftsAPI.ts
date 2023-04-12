@@ -157,7 +157,6 @@ export class NftsAPI {
 
         let newDataForm = new FormData()
 
-        console.log("mtdata", data)
         newDataForm.append("image", data.image)
 
 

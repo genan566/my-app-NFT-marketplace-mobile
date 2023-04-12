@@ -20,7 +20,6 @@ export class UsersAPI {
         if (token && id) {
             let dataSent = new FormData()
             dataSent.append("image", data.image)
-            console.log(dataSent.get("image"))
 
             return fetch(
                 api_url(`user/retrieve/upload-image-auth/${id}`),

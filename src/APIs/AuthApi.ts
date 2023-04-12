@@ -142,7 +142,6 @@ export class AuthAPI {
 
         let dataSent = new FormData()
         dataSent.append("image", data.image)
-        console.log(dataSent.get("image"))
 
         try {
             return fetch(
