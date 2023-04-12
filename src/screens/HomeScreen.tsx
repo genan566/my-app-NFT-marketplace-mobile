@@ -58,14 +58,16 @@ const HomeScreen = ({ navigation }) => {
 
 
             <SwipeUpDown
-                itemFull={(hide: any) => <ViewHiddenOfNFt callAction={() => swipeUpDownRef.current.showMini()} style={{ height: "100%" }} hide={hide} />}
+                itemFull={(hide: any) => <ViewHiddenOfNFt
+                    callAction={() => swipeUpDownRef.current.showMini()}
+                    hide={hide} />}
                 ref={swipeUpDownRef}
                 onShowMini={() => console.log('mini')}
                 onShowFull={() => console.log('full')}
                 animation="spring"
                 // disableSwipeIcon
                 // extraMarginTop={100}
-                swipeHeight={HEIGHT * .9}
+                swipeHeight={HEIGHT * .92}
                 iconColor='gray'
                 iconSize={30}
                 style={{ backgroundColor: 'rgba(82, 82, 79,.8)', zIndex: 100 }} // style for swipe
