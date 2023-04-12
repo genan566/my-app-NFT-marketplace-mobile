@@ -159,8 +159,8 @@ const HomeScreen = ({ navigation }) => {
                     </TouchableOpacity>
 
                     {loadingDataCategories &&
-                        <View style={{ alignItems: "center", justifyContent: "center", gap: 10, width: "100%", flexDirection: "row", }}>
-                            <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white", textAlign: "center" }} >Chargement des catégories</Text>
+                        <View style={{ alignItems: "center", gap: 10, width: WIDTH * .8, flexDirection: "row", }}>
+                            <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white", textAlign: "center", }} >Chargement des catégories</Text>
                             <ActivityIndicator size="small" color="rgb(99, 102, 241)" />
                         </View>
                     }
