@@ -6,6 +6,10 @@ import { BlurView } from 'expo-blur'
 import { AntDesign, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 // import { SwipeablePanel } from 'rn-swipeable-panel';
 import NFTViewer from '../components/NFTViewer'
+import { PaginatedDataNFT } from '../types/PaginatedData'
+import { NftsAPI } from '../APIs/NftsAPI'
+import { CategoriesTrendingAPI } from '../APIs/CategoriesTrending'
+import { CategoriesTrending } from '../types/CategorieTrendingType'
 
 const WIDTH = Dimensions.get("screen").width;
 const HEIGHT = Dimensions.get("screen").height;
@@ -15,15 +19,43 @@ const HEIGHT = Dimensions.get("screen").height;
 const HomeScreen = () => {
     const { loaded } = useLoadingFonts()
     const [seachNFT, setseachNFT] = React.useState("");
-    const [panelProps, setPanelProps] = useState({
-        fullWidth: true,
-        openLarge: true,
-        showCloseButton: true,
-        onClose: () => closePanel(),
-        onPressCloseButton: () => closePanel(),
-        // ...or any prop you want
-    });
     const [isPanelActive, setIsPanelActive] = useState(false);
+    const [nftsData, setnftsData] = React.useState<PaginatedDataNFT>({} as PaginatedDataNFT)
+
+    const [castedCount, setCastedCount] = React.useState<number[]>([])
+    const [categoriesTrending, setCategoriesTrending] = React.useState<CategoriesTrending[]>([])
+    const [activeCategoriesTrending, setActiveCategoriesTrending] = React.useState<number>(0)
+    const [activePage, setActivePage] = React.useState(1)
+    const [search, setSearch] = React.useState("")
+    const initial_fetching_nfts = () => {
+        let resNFTs = new NftsAPI()
+        resNFTs.get_all_nfts().then(data => setnftsData(data))
+    }
+
+    React.useEffect(() => {
+        initial_fetching_nfts()
+        let categories_trendings = new CategoriesTrendingAPI()
+        categories_trendings.get_all_categories().then(data => {
+            setCategoriesTrending(data.results)
+        })
+    }, [])
+
+    const activeCategorieFilteringCallbacks = React.useCallback(() => {
+        if (activeCategoriesTrending !== 0) {
+            let resNFTs = new NftsAPI()
+            resNFTs
+                .get_filtered_by_trendingIDs_nfts(activeCategoriesTrending)
+                .then(data => {
+                    setnftsData(data)
+                    setActivePage(1)
+                })
+        } else
+            initial_fetching_nfts()
+    }, [activeCategoriesTrending])
+
+    React.useEffect(() => {
+        activeCategorieFilteringCallbacks()
+    }, [activeCategorieFilteringCallbacks])
 
     const openPanel = () => {
         setIsPanelActive(true);
@@ -98,17 +130,49 @@ const HomeScreen = () => {
                 </View>
             </View>
 
-
             <ScrollView
                 // showsVerticalScrollIndicator={false}
                 contentContainerStyle={{}}
                 style={{ height: HEIGHT * .9 }}>
 
+
+                <ScrollView
+                    horizontal
+                    style={{}}
+                    contentContainerStyle={{ height: 50, width: "100%", alignItems: "center", gap: 10, paddingHorizontal: 20, paddingRight: 200 }}
+                // showsHorizontalScrollIndicator={false}
+                >
+                    <TouchableOpacity
+                        onPress={() => {
+                            setActiveCategoriesTrending(0);
+                        }}
+                        style={{ paddingHorizontal: 10, backgroundColor: activeCategoriesTrending === 0 ? "rgb(99, 102, 241)" : null, borderColor: activeCategoriesTrending === 0 ? null : "white", borderWidth: 1, paddingVertical: 10, borderRadius: 50 }}>
+                        <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white" }}>Default</Text>
+                    </TouchableOpacity>
+                    {
+                        categoriesTrending?.map((category) => {
+                            return <TouchableOpacity
+                                onPress={() => {
+                                    setActiveCategoriesTrending(category.id);
+                                }}
+                                key={category?.id}
+                                style={{
+                                    paddingHorizontal: 10, backgroundColor: category.id === activeCategoriesTrending ? "rgb(99, 102, 241)" : null,
+                                    borderColor: category.id === activeCategoriesTrending ? null : "white", borderWidth: 1, paddingVertical: 10, borderRadius: 50
+                                }}>
+                                <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white" }}>{category?.name}</Text>
+                            </TouchableOpacity>
+                        })
+                    }
+
+                </ScrollView>
+
                 <View style={{ marginTop: 15, paddingHorizontal: 20 }}>
                     {
-                        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18].map(it => {
+                        nftsData.results?.map(it => {
+                            console.log(it)
                             return (
-                                <NFTViewer key={it} image={require('../../assets/images/teso.jpg')} />
+                                <NFTViewer data={it} key={it.id} />
                             )
                         })
                     }

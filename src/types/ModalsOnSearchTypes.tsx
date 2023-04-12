@@ -1,0 +1,1 @@
+export interface ModalsOnSearchTypes { isOpenResearch: boolean, toggleOnResearch: () => void }

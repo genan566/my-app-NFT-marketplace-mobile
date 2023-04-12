@@ -1,0 +1,1 @@
+export interface ModalsLogOutTypes { isShownModalsLogOut: boolean, toggleModalsOnLogout: () => void, handlerLogoutFunc: () => void }

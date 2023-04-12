@@ -47,8 +47,6 @@ const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
 function App() {
-  const { loaded } = useLoadingFonts()
-
 
   return (
     <>
