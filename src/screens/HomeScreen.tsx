@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image, TextInput, TouchableOpacity, FlatList, Dimensions, SafeAreaView } from 'react-native'
+import { View, Text, ScrollView, Image, TextInput, TouchableOpacity, FlatList, Dimensions, SafeAreaView, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import RootComponent from '../components/RootComponent'
 import { useLoadingFonts } from '../../utilities/LoadingFonts'
@@ -10,6 +10,7 @@ import { PaginatedDataNFT } from '../types/PaginatedData'
 import { NftsAPI } from '../APIs/NftsAPI'
 import { CategoriesTrendingAPI } from '../APIs/CategoriesTrending'
 import { CategoriesTrending } from '../types/CategorieTrendingType'
+import useNftHooks from '../hooks/nftHooks'
 
 const WIDTH = Dimensions.get("screen").width;
 const HEIGHT = Dimensions.get("screen").height;
@@ -18,48 +19,26 @@ const HEIGHT = Dimensions.get("screen").height;
 
 const HomeScreen = ({ navigation }) => {
     const { loaded } = useLoadingFonts()
-    const [seachNFT, setseachNFT] = React.useState("");
     const [isPanelActive, setIsPanelActive] = useState(false);
-    const [nftsData, setnftsData] = React.useState<PaginatedDataNFT>({} as PaginatedDataNFT)
-
-    const [castedCount, setCastedCount] = React.useState<number[]>([])
-    const [categoriesTrending, setCategoriesTrending] = React.useState<CategoriesTrending[]>([])
-    const [activeCategoriesTrending, setActiveCategoriesTrending] = React.useState<number>(0)
-    const [activePage, setActivePage] = React.useState(1)
-    const [search, setSearch] = React.useState("")
-    const initial_fetching_nfts = () => {
-        let resNFTs = new NftsAPI()
-        resNFTs.get_all_nfts().then(data => setnftsData(data))
-    }
-
-    React.useEffect(() => {
-        initial_fetching_nfts()
-        let categories_trendings = new CategoriesTrendingAPI()
-        categories_trendings.get_all_categories().then(data => {
-            setCategoriesTrending(data.results)
-        })
-    }, [])
-
-    const activeCategorieFilteringCallbacks = React.useCallback(() => {
-        if (activeCategoriesTrending !== 0) {
-            let resNFTs = new NftsAPI()
-            resNFTs
-                .get_filtered_by_trendingIDs_nfts(activeCategoriesTrending)
-                .then(data => {
-                    setnftsData(data)
-                    setActivePage(1)
-                })
-        } else
-            initial_fetching_nfts()
-    }, [activeCategoriesTrending])
-
-    React.useEffect(() => {
-        activeCategorieFilteringCallbacks()
-    }, [activeCategorieFilteringCallbacks])
+    const [searchText, setSearchText] = React.useState("")
+    const { data, categoriesTrending,
+        activeCategoriesTrending,
+        setActiveCategoriesTrending, activePage,
+        search, changingStateSearch,
+        loadingData,
+        initial_fetching_nfts,
+        prefixedPaginate, callingTheNestedData, castedCount, setCastedCount
+    } = useNftHooks()
 
     const openPanel = () => {
         setIsPanelActive(true);
     };
+
+    React.useEffect(() => {
+
+
+        searchText.trim().length === 0 ? initial_fetching_nfts() : changingStateSearch(searchText)
+    }, [searchText])
 
     const closePanel = () => {
         setIsPanelActive(false);
@@ -112,19 +91,20 @@ const HomeScreen = ({ navigation }) => {
                     marginTop: 20, padding: 10, width: "100%", paddingRight: 15
                 }}>
                     <TouchableOpacity onPress={() => {
-                        seachNFT.length > 0 && setseachNFT("")
-                        // seachNFT.length > 0 && setseachNFT("")
+                        searchText.length > 0 && setSearchText("")
+                        // search.length > 0 && changingStateSearch("")
                     }}>
                         {
-                            seachNFT.length > 0 ?
+                            searchText.length > 0 ?
                                 <AntDesign name="closecircleo" size={24} color="white" /> :
                                 <Feather name="search" size={24} color="white" />
                         }
                     </TouchableOpacity>
                     <TextInput
-                        value={seachNFT}
+                        value={searchText}
                         onChangeText={(nextValue: any) => {
-                            setseachNFT(nextValue)
+                            // changingStateSearch(nextValue)
+                            setSearchText(nextValue)
                         }}
                         placeholderTextColor="white"
                         placeholder='Search NFT or artist name'
@@ -168,20 +148,62 @@ const HomeScreen = ({ navigation }) => {
                     }
 
                 </ScrollView>
+                {console.log(castedCount)}
+                {
+                    !(Object.keys(data).length === 0) && <View style={{ flexDirection: "row", marginVertical: 15, alignItems: "center", justifyContent: "center", gap: 10 }}>
+                        {
+                            data.previous && <TouchableOpacity style={{ backgroundColor: "rgb(99, 102, 241)", padding: 10, paddingHorizontal: 14.5, borderRadius: 100 }}
+                                onPress={() => callingTheNestedData(activePage - 1)}
+                            >
+
+                                <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white" }}>Previous</Text>
+                            </TouchableOpacity>
+                        }
+                        {
+                            castedCount.map(it => (<>
+                                <TouchableOpacity style={{ backgroundColor: activePage === it ? "white" : "rgb(99, 102, 241)", padding: 10, paddingHorizontal: 14.5, borderRadius: 100 }}
+                                    key={it.toString()}
+                                    onPress={() => prefixedPaginate(it)}
+                                ><Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: activePage === it ? "black" : "white" }}>{it}</Text></TouchableOpacity>
+                            </>))
+                        }
+                        {
+                            data.next && <TouchableOpacity style={{ backgroundColor: "rgb(99, 102, 241)", padding: 10, paddingHorizontal: 14.5, borderRadius: 100 }}
+                                onPress={() => callingTheNestedData(activePage + 1)}
+                            >
+                                <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white" }}>Next</Text>
+                            </TouchableOpacity>
+                        }
+                    </View>
+                }
 
                 <View style={{ marginTop: 15, paddingHorizontal: 20 }}>
+
+                    {loadingData &&
+                        <View style={{ alignItems: "center", justifyContent: "center", gap: 10, flex: 1, flexDirection: "row", marginBottom: 20 }}>
+                            <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white" }} >Chargement des données</Text>
+                            <ActivityIndicator size="small" color="rgb(99, 102, 241)" />
+                        </View>
+                    }
+
                     {
-                        nftsData.results?.map(it => {
-                            console.log(it)
+                        data.results?.map(it => {
                             return (
                                 <NFTViewer data={it} key={it.id} />
                             )
                         })
                     }
+
+                    {Boolean(data.results) && data.results.length === 0 && !loadingData &&
+                        <View style={{ alignItems: "center", justifyContent: "center", gap: 10, flex: 1, marginBottom: 20 }}>
+                            <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white", textAlign: "center" }} >Aucune données NFT trouvé avec </Text>
+                            <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white", textAlign: "center" }} >"{search}"</Text>
+                        </View>
+                    }
                 </View>
                 <View style={{ marginBottom: 20, }} />
             </ScrollView>
-        </RootComponent>
+        </RootComponent >
     )
 }
 

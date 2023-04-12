@@ -32,8 +32,6 @@ const NFTViewer = ({ data }: { data: any, }) => {
         }
     }
 
-    console.log(saleHistories.length)
-
     const calculatedSalesAdded = React.useMemo(() => {
         if (saleHistories.length > 0) {
             return saleHistories.length > 1000 ? `${saleHistories.length / 1000}K`
