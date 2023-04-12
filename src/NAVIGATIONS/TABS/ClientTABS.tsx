@@ -1,7 +1,34 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import React, { Component } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../../screens/HomeScreen';
+import { createStackNavigator } from '@react-navigation/stack';
+import Profile from '../../screens/Profile';
+
+
+
+const HomeScreenss = createStackNavigator();
+
+export class HomeScreenssScreen extends Component {
+    render() {
+        return (
+            <HomeScreenss.Navigator
+                screenOptions={{
+                    headerShown: false
+                }}
+
+
+                initialRouteName={'Home'}
+            >
+                <HomeScreenss.Screen name="Home" component={HomeScreen} />
+                <HomeScreenss.Screen name="Profile" component={Profile} />
+            </HomeScreenss.Navigator>
+        )
+    }
+}
+
+
+
 const ClientTABS = () => {
     const Tab = createBottomTabNavigator();
     return (
@@ -11,8 +38,8 @@ const ClientTABS = () => {
                     backgroundColor: "black",
                 },
                 tabBarLabelStyle: { fontFamily: "Montserrat-Medium" },
-                tabBarActiveTintColor: "#4fd1c5",
-                // tabBarIndicatorStyle: { backgroundColor: "#4fd1c5", height: 1 },
+                tabBarActiveTintColor: "rgb(99, 102, 241)",
+                // tabBarIndicatorStyle: { backgroundColor: "rgb(99, 102, 241)", height: 1 },
                 tabBarInactiveTintColor: "white",
                 headerShown: false,
 
@@ -20,8 +47,8 @@ const ClientTABS = () => {
         >
 
             <Tab.Screen
-                name="Home"
-                component={HomeScreen}
+                name="HomeStacks"
+                component={HomeScreenssScreen}
             />
 
             {/* <Tab.Screen

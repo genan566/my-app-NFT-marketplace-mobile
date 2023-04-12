@@ -10,6 +10,12 @@ import { StatusBar } from 'expo-status-bar';
 import { useLoadingFonts, } from './utilities/LoadingFonts';
 import StartScreen from './src/screens/StartScreen';
 import ClientTABS from './src/NAVIGATIONS/TABS/ClientTABS';
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
+
+
+import * as eva from '@eva-design/eva';
+
 function DetailsScreen() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -50,8 +56,11 @@ function App() {
 
   return (
     <>
-      <NavigationContainer>
-        {/* <Stack.Navigator
+
+      <IconRegistry icons={EvaIconsPack} />
+      <ApplicationProvider {...eva} theme={eva.light}>
+        <NavigationContainer>
+          {/* <Stack.Navigator
           screenOptions={{
             headerShown: false
           }}
@@ -60,14 +69,15 @@ function App() {
           <Stack.Screen name="Detail" component={DetailsScreen} />
         </Stack.Navigator> */}
 
-        <ClientTABS />
-        {/* <Drawer.Navigator>
+          <ClientTABS />
+          {/* <Drawer.Navigator>
         <Drawer.Screen name="Home" component={HomeScreen} />
         <Drawer.Screen name="Detail" component={DetailsScreen} />
       </Drawer.Navigator> */}
-      </NavigationContainer>
+        </NavigationContainer>
 
-      <StatusBar style="auto" />
+        <StatusBar style="auto" />
+      </ApplicationProvider>
     </>
   );
 }

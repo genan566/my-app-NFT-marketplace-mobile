@@ -16,7 +16,7 @@ const HEIGHT = Dimensions.get("screen").height;
 
 
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
     const { loaded } = useLoadingFonts()
     const [seachNFT, setseachNFT] = React.useState("");
     const [isPanelActive, setIsPanelActive] = useState(false);
@@ -91,7 +91,9 @@ const HomeScreen = () => {
                     <Text style={{ color: "white", fontFamily: loaded && "Montserrat-Medium", fontSize: 17, textAlign: "center" }}>NFT collection</Text>
                 </View>
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-                    <TouchableOpacity style={{ backgroundColor: "white", overflow: "hidden", borderRadius: 50, }}>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate("Profile")}
+                        style={{ backgroundColor: "white", overflow: "hidden", borderRadius: 50, }}>
                         <Image
                             style={{ width: 45, height: 45 }}
                             resizeMode="cover"
