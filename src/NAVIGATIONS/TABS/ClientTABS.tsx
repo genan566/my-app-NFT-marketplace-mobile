@@ -36,6 +36,8 @@ const ClientTABS = () => {
             screenOptions={{
                 tabBarStyle: {
                     backgroundColor: "black",
+                    borderTopColor: "black",
+                    borderTopWidth: 1,
                 },
                 tabBarLabelStyle: { fontFamily: "Montserrat-Medium" },
                 tabBarActiveTintColor: "rgb(99, 102, 241)",
