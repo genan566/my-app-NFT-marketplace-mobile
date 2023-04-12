@@ -6,12 +6,15 @@ import { useLoadingFonts } from "../../utilities/LoadingFonts"
 import { blurhash } from "../../utilities/Hasher"
 import { Feather } from "@expo/vector-icons"
 import { SwipeButton } from "react-native-expo-swipe-button"
+import { RootNftContext } from "../contexts"
 const WIDTH = Dimensions.get("screen").width;
 const HEIGHT = Dimensions.get("screen").height;
 
 const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
     // const Tab = createMaterialTopTabNavigator();
     const { loaded } = useLoadingFonts()
+    const nFTContext = React.useContext(RootNftContext)
+
     return (
         <RootComponent>
 
@@ -81,10 +84,10 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                 </View>
 
                 <ScrollView contentContainerStyle={{ paddingHorizontal: 20, marginTop: 85 }}>
-                    <TouchableHighlight>
+                    <TouchableHighlight style={{ overflow: "hidden", borderRadius: 10, borderWidth: 1, borderColor: "rgba(100,100,100,.5)", elevation: 10 }}>
                         <Image
                             style={{ height: HEIGHT * .4, width: "100%" }}
-                            source={require("../../assets/images/1.png")}
+                            source={nFTContext.nftData.image ? { uri: nFTContext.nftData.image } : require("../../assets/images/1.png")}
                             placeholder={blurhash}
                             // contentFit="cover"
                             resizeMode='cente'
@@ -132,7 +135,7 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                                     <Feather name="layers" size={24} color="white" />
                                     <View>
                                         <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: loaded && "Montserrat-Medium", }}>Current Bid</Text>
-                                        <Text style={{ color: "white", fontFamily: loaded && "Montserrat-SemiBold", fontSize: 20, marginTop: 2.5 }}>5ETH</Text>
+                                        <Text style={{ color: "white", fontFamily: loaded && "Montserrat-SemiBold", fontSize: 20, marginTop: 2.5 }}>{nFTContext.nftData.price} ETH</Text>
                                     </View>
                                 </View>
                             </View>

@@ -11,6 +11,8 @@ import SwipeUpDown from 'react-native-swipe-up-down';
 import { Icon } from '@ui-kitten/components'
 import { blurhash } from '../../utilities/Hasher'
 import ViewHiddenOfNFt from '../components/CustomSwipeableContent'
+import { RootNftContext } from '../contexts'
+import { NftTypesValues } from '../types/NFTTypes'
 
 const WIDTH = Dimensions.get("screen").width;
 const HEIGHT = Dimensions.get("screen").height;
@@ -22,6 +24,7 @@ const HomeScreen = ({ navigation }) => {
     const swipeUpDownRef = useRef();
     const [isPanelActive, setIsPanelActive] = useState(false);
     const [searchText, setSearchText] = React.useState("")
+
     const { data, categoriesTrending,
         activeCategoriesTrending,
         setActiveCategoriesTrending, activePage,
@@ -30,6 +33,7 @@ const HomeScreen = ({ navigation }) => {
         initial_fetching_nfts,
         prefixedPaginate, callingTheNestedData, castedCount, loadingDataCategories
     } = useNftHooks()
+    const nFTContext = React.useContext(RootNftContext)
 
     const openPanel = () => {
         setIsPanelActive(true);
@@ -50,12 +54,6 @@ const HomeScreen = ({ navigation }) => {
     return (
 
         <RootComponent>
-            {/* <View style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "red", zIndex: 10 }}>
-
-
-               
-            </View> */}
-
 
             <SwipeUpDown
                 itemFull={(hide: any) => <ViewHiddenOfNFt
@@ -223,8 +221,20 @@ const HomeScreen = ({ navigation }) => {
                     {
                         data.results?.map(it => {
                             return (
-                                <NFTViewer callActionView={() =>
-                                    swipeUpDownRef.current.showFull()} data={it} key={it.id} />
+                                <NFTViewer callActionView={() => {
+                                    let sendedData: NftTypesValues = {
+                                        id: it.id,
+                                        title: it.title,
+                                        description: it.description,
+                                        owner_id: it.owner,
+                                        image: it.image,
+                                        price: it.price,
+                                        categories_trending: it.categories_trending,
+                                        sales_history: it.sales_history,
+                                    }
+                                    sendedData && nFTContext?.setNftData(sendedData)
+                                    swipeUpDownRef.current.showFull()
+                                }} data={it} key={it.id} />
                             )
                         })
                     }

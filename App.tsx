@@ -17,6 +17,7 @@ import { EvaIconsPack } from '@ui-kitten/eva-icons';
 LogBox.ignoreAllLogs();
 
 import * as eva from '@eva-design/eva';
+import { RootAdminEditableUserContextProvider, RootCreatorProvider, RootNFTContextProvider, RootUserContextProvider } from './src/contexts';
 
 function DetailsScreen() {
   return (
@@ -59,10 +60,15 @@ function App() {
   return (
     <>
 
-      <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider {...eva} theme={eva.light}>
-        <NavigationContainer>
-          {/* <Stack.Navigator
+      {/* <Initializer> */}
+      <RootAdminEditableUserContextProvider>
+        <RootCreatorProvider>
+          <RootUserContextProvider>
+            <RootNFTContextProvider>
+              <IconRegistry icons={EvaIconsPack} />
+              <ApplicationProvider {...eva} theme={eva.light}>
+                <NavigationContainer>
+                  {/* <Stack.Navigator
           screenOptions={{
             headerShown: false
           }}
@@ -71,15 +77,20 @@ function App() {
           <Stack.Screen name="Detail" component={DetailsScreen} />
         </Stack.Navigator> */}
 
-          <ClientTABS />
-          {/* <Drawer.Navigator>
+                  <ClientTABS />
+                  {/* <Drawer.Navigator>
         <Drawer.Screen name="Home" component={HomeScreen} />
         <Drawer.Screen name="Detail" component={DetailsScreen} />
       </Drawer.Navigator> */}
-        </NavigationContainer>
+                </NavigationContainer>
 
-        <StatusBar style="auto" />
-      </ApplicationProvider>
+                <StatusBar style="auto" />
+              </ApplicationProvider>
+            </RootNFTContextProvider>
+          </RootUserContextProvider>
+        </RootCreatorProvider>
+      </RootAdminEditableUserContextProvider>
+      {/* </Initializer> */}
     </>
   );
 }
