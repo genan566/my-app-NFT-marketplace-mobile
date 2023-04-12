@@ -5,15 +5,20 @@ import { Icon } from "@ui-kitten/components"
 import { useLoadingFonts } from "../../utilities/LoadingFonts"
 import { blurhash } from "../../utilities/Hasher"
 import { Feather } from "@expo/vector-icons"
-import { SwipeButton } from "react-native-expo-swipe-button"
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { RootNftContext } from "../contexts"
+import Detail from "./DetailsNFT"
+import Owners from "./OwnersNFT"
+import Histories from "./HistoriesNFT"
 const WIDTH = Dimensions.get("screen").width;
 const HEIGHT = Dimensions.get("screen").height;
 
+const Tab = createMaterialTopTabNavigator();
 const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
     // const Tab = createMaterialTopTabNavigator();
     const { loaded } = useLoadingFonts()
     const nFTContext = React.useContext(RootNftContext)
+    const [activePage, setactivePage] = React.useState<number>(0)
 
     return (
         <RootComponent>
@@ -191,6 +196,53 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                                 style={{ width: 20, height: 20, tintColor: "black", fontWeight: "bold", marginLeft: 10 }} /> */}
                         </TouchableOpacity>
                     </View>
+
+                    <View style={{
+                        marginTop: 15, flexDirection: "row", alignItems: "center",
+                        justifyContent: "center", borderBottomColor: "rgba(100,100,100,.5)", borderBottomWidth: 1,
+                    }}>
+                        <TouchableOpacity
+                            onPress={() => setactivePage(0)}
+                            style={{
+                                flex: 1, paddingVertical: 20, borderBottomColor: activePage === 0 ? "white" : "transparent",
+                                borderBottomWidth: activePage === 0 ? 1 : 0,
+                            }}>
+                            <Text style={{
+                                color: "white", textAlign: "center",
+                                fontFamily: loaded && "Montserrat-SemiBold",
+                            }}>Details</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            onPress={() => setactivePage(1)}
+                            style={{
+                                flex: 1, paddingVertical: 20, borderBottomColor: activePage === 1 ? "white" : "transparent",
+                                borderBottomWidth: activePage === 1 ? 1 : 0,
+                            }}>
+                            <Text style={{
+                                color: "white", textAlign: "center",
+                                fontFamily: loaded && "Montserrat-SemiBold",
+                            }}>Owners</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            onPress={() => setactivePage(2)}
+                            style={{
+                                flex: 1, paddingVertical: 20, borderBottomColor: activePage === 2 ? "white" : "transparent",
+                                borderBottomWidth: activePage === 2 ? 1 : 0,
+                            }}>
+                            <Text style={{
+                                color: "white", textAlign: "center",
+                                fontFamily: loaded && "Montserrat-SemiBold",
+                            }}>History</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    {
+                        activePage === 0 ? <Detail /> :
+                            activePage === 1 ? <Owners /> :
+                                <Histories />
+                    }
 
                     <View style={{ marginBottom: HEIGHT * .3 }} />
                 </ScrollView>
