@@ -46,7 +46,8 @@
     "react-native-pager-view": "6.1.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "@types/react-native": "^0.71.5"
   },
   "private": true
 }

@@ -140,6 +140,7 @@ const HomeScreen = ({ navigation }) => {
             <ScrollView
                 // showsVerticalScrollIndicator={false}
                 contentContainerStyle={{}}
+                showsVerticalScrollIndicator={false}
                 style={{ height: HEIGHT * .9 }}>
 
                 <ScrollView

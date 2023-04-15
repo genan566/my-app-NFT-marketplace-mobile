@@ -87,8 +87,8 @@ const NFTViewer = ({ data, callActionView }: { data: any, callActionView: () => 
                     </View>
                 </View>
                 <View style={{ width: "100%", marginBottom: 15 }}>
-                    <Text style={{ fontFamily: loaded && "Montserrat-Medium", fontSize: 30, color: "white", width: "50%" }} numberOfLines={1} >{data.title}</Text>
-                    <Text style={{ fontFamily: loaded && "Montserrat-Medium", fontSize: 25, color: "white", width: "90%" }} numberOfLines={1} >{data.description}</Text>
+                    <Text style={{ fontFamily: loaded && "Montserrat-Medium", fontSize: 28, color: "white", width: "50%" }} numberOfLines={1} >{data.title}</Text>
+                    <Text style={{ fontFamily: loaded && "Montserrat-Medium", fontSize: 22, color: "white", width: "90%" }} numberOfLines={1} >{data.description}</Text>
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
 
