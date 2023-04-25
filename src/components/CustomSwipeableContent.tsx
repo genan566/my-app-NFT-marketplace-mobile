@@ -6,10 +6,17 @@ import { useLoadingFonts } from "../../utilities/LoadingFonts"
 import { blurhash } from "../../utilities/Hasher"
 import { Feather } from "@expo/vector-icons"
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { RootNftContext } from "../contexts"
+import { RootNftContext, RootUserTokenContext } from "../contexts"
 import Detail from "./DetailsNFT"
 import Owners from "./OwnersNFT"
 import Histories from "./HistoriesNFT"
+import { SaleHistoriesAPI } from "../APIs/SaleHistoriesAPI"
+import { AuthAPI } from "../APIs/AuthApi"
+import { routeAPIBaseImage } from "../APIs/APIRoutes"
+import { SaleHistory } from "../types/SaleHistoryType"
+import { UserRetrieveInterface } from "../types/UserRetrieveTypes"
+import { CategoriesTrendingAPI } from "../APIs/CategoriesTrending"
+import { CategoriesTrending } from "../types/CategorieTrendingType"
 const WIDTH = Dimensions.get("screen").width;
 const HEIGHT = Dimensions.get("screen").height;
 
@@ -17,8 +24,88 @@ const Tab = createMaterialTopTabNavigator();
 const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
     // const Tab = createMaterialTopTabNavigator();
     const { loaded } = useLoadingFonts()
-    const nFTContext = React.useContext(RootNftContext)
+    const userTokenContext = React.useContext(RootUserTokenContext)
+    const nftContext = React.useContext(RootNftContext)
+    const [saleHistories, setSaleHistories] = React.useState<SaleHistory[]>([])
     const [activePage, setactivePage] = React.useState<number>(0)
+    const [categories, setCategories] = React.useState<CategoriesTrending[]>([])
+    const [userRetrieveDataListForSales, setuserRetrieveDataListForSales] = React.useState<UserRetrieveInterface[]>([])
+
+    const load_sale_histories = async () => {
+        let sales_getted = nftContext?.nftData?.id
+        if (Boolean(sales_getted)) {
+            let salesHistories_trendings = new SaleHistoriesAPI()
+            salesHistories_trendings
+                .get_multi_sales_by_nftID(sales_getted)
+                .then(data => {
+                    if (data.length > 0) {
+                        setSaleHistories([...data])
+                        data.map((item: any) => {
+                            let respAuth = new AuthAPI()
+                            if (userTokenContext.token !== "") {
+                                let token = userTokenContext.token
+                                respAuth
+                                    .retrive_account(token, item.user_suscribed)
+                                    .then(res => {
+                                        let formatedData = {
+                                            email: res.email,
+                                            id: res.id,
+                                            name: res.name,
+                                            pseudo: res.pseudo,
+                                            is_superuser: res.is_superuser,
+                                            is_staff: res.is_staff,
+                                            image: routeAPIBaseImage + res.image.toString(),
+                                        }
+
+                                        setuserRetrieveDataListForSales
+                                            ([...userRetrieveDataListForSales, formatedData])
+
+                                    })
+                            }
+                        })
+                    }
+                })
+        }
+    }
+
+
+    const load_categories = async () => {
+        if (Boolean(nftContext?.nftData?.categories_trending?.length)) {
+            {
+
+                // categories_trending.map(it => {
+                //     let idX = it
+                //     let categories_trendings = new CategoriesTrendingAPI()
+                //     categories_trendings
+                //         .get_categorie(idX)
+                //         .then(data => {
+                //             let checker = { id: data.id, name: data.name }
+                //             if ((categorie?.id !== checker.id) && categorie?.name !== checker.name) {
+                //                 setCategorie(data)
+                //             }
+                //         })
+                // })
+
+                let categories_trendings = new CategoriesTrendingAPI()
+                categories_trendings
+                    .get_multi_categorie(nftContext?.nftData?.categories_trending)
+                    .then(data => {
+                        if (data.results.length > 0) {
+                            setCategories([...data.results])
+                        }
+                    })
+            }
+        }
+    }
+
+    React.useEffect(() => {
+        load_categories()
+    }, [nftContext?.nftData?.categories_trending])
+
+
+    React.useEffect(() => {
+        load_sale_histories()
+    }, [nftContext?.nftData?.sales_history])
 
     return (
         <RootComponent>
@@ -89,23 +176,54 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                 </View>
 
                 <ScrollView contentContainerStyle={{ paddingHorizontal: 20, marginTop: 85 }}>
-                    <TouchableHighlight style={{ overflow: "hidden", borderRadius: 10, borderWidth: 1, borderColor: "rgba(100,100,100,.5)", elevation: 10 }}>
+                    <TouchableHighlight style={{ overflow: "hidden", borderRadius: 10, borderWidth: 1, borderColor: "rgba(100,100,100,.2)", elevation: 10 }}>
                         <Image
                             style={{ height: HEIGHT * .4, width: "100%" }}
-                            source={nFTContext.nftData.image ? { uri: nFTContext.nftData.image } : require("../../assets/images/1.png")}
+                            source={nftContext.nftData.image ? { uri: nftContext.nftData.image } : require("../../assets/images/1.png")}
                             placeholder={blurhash}
                             // contentFit="cover"
-                            resizeMode='center'
+                            resizeMode='cover'
                             transition={1000}
                         />
 
                     </TouchableHighlight>
+
+
+                    <TouchableHighlight style={{ marginTop: 15 }}>
+                        {/* <Text style={{ color: "white", fontFamily: loaded && "Montserrat-SemiBold", fontSize: 20, marginTop: 2.5 }}>D'EVELs</Text> */}
+                        <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: loaded && "Montserrat-Medium", }}>It is with this company that I started to take my marks
+                            in the field of Web Development. I had to get up to speed with the basic technologies to code Web applications.  I got closer to the developers to
+                            get in touch with them and familiarize myself with the tools and
+                            techniques that the company uses to manage its products.</Text>
+                    </TouchableHighlight>
+
+
+
+                    <View style={{ alignItems: "flex-start", marginVertical: 15, flexDirection: "row", flexWrap: "wrap" }}>
+                        {
+                            categories?.map(it => {
+                                return (
+                                    <TouchableOpacity
+                                        style={{
+                                            paddingHorizontal: 20, backgroundColor: "transparent",
+                                            borderColor: "rgb(99, 102, 241)", borderWidth: 1, paddingVertical: 10, borderRadius: 50, marginRight: 10, marginTop: 10
+                                        }}>
+                                        <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white" }}>{it.name}</Text>
+                                    </TouchableOpacity>
+                                )
+                            })
+                        }
+                    </View>
+
+
+
+
                     <View style={{
                         flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 20,
 
                     }}>
                         <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-                            <View style={{ borderWidth: 1, borderColor: "rgba(100,100,100,.5)", borderRadius: 100, overflow: "hidden", }}>
+                            <TouchableHighlight style={{ borderWidth: 1, borderColor: "rgba(100,100,100,.5)", borderRadius: 100, overflow: "hidden", }}>
                                 <Image
                                     style={{ height: 50, width: 50 }}
                                     source={require("../../assets/images/1.png")}
@@ -114,6 +232,14 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                                     resizeMode='center'
                                     transition={1000}
                                 />
+                            </TouchableHighlight>
+                            <View>
+                                <TouchableHighlight>
+                                    <Text style={{ color: "white", fontFamily: loaded && "Montserrat-SemiBold", fontSize: 20, marginTop: 2.5 }}>D'EVELs</Text>
+                                </TouchableHighlight>
+                                <TouchableHighlight>
+                                    <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: loaded && "Montserrat-Medium", }}>Owner By Zizzler</Text>
+                                </TouchableHighlight>
                             </View>
                         </View>
                         <TouchableOpacity style={{ backgroundColor: "rgb(50,50,50)", borderRadius: 100, padding: 10 }}
@@ -127,6 +253,7 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                                 }} />
                         </TouchableOpacity>
                     </View>
+
                     <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 20, gap: 10 }}>
                         <TouchableHighlight style={{ overflow: "hidden", backgroundColor: "rgba(82, 82, 79,.8)", borderRadius: 100 }}>
                             <View style={{
@@ -140,12 +267,12 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                                     <Feather name="layers" size={24} color="white" />
                                     <View>
                                         <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: loaded && "Montserrat-Medium", }}>Current Bid</Text>
-                                        <Text style={{ color: "white", fontFamily: loaded && "Montserrat-SemiBold", fontSize: 20, marginTop: 2.5 }}>{nFTContext.nftData.price} ETH</Text>
+                                        <Text style={{ color: "white", fontFamily: loaded && "Montserrat-SemiBold", fontSize: 20, marginTop: 2.5 }}>{nftContext.nftData.price} ETH</Text>
                                     </View>
                                 </View>
                             </View>
                         </TouchableHighlight>
-                        <TouchableHighlight style={{ overflow: "hidden", backgroundColor: "rgba(82, 82, 79,.8)", borderRadius: 100 }}>
+                        {/* <TouchableHighlight style={{ overflow: "hidden", backgroundColor: "rgba(82, 82, 79,.8)", borderRadius: 100 }}>
                             <View style={{
                                 padding: 8, paddingHorizontal: 20, elevation: 10, display: "flex",
                                 justifyContent: 'space-between', flexDirection: "row", alignItems: "center"
@@ -161,7 +288,7 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                                     </View>
                                 </View>
                             </View>
-                        </TouchableHighlight>
+                        </TouchableHighlight> */}
                     </View>
 
                     {/* <Tab.Navigator>
@@ -201,7 +328,7 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                         marginTop: 15, flexDirection: "row", alignItems: "center",
                         justifyContent: "center", borderBottomColor: "rgba(100,100,100,.5)", borderBottomWidth: 1,
                     }}>
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             onPress={() => setactivePage(0)}
                             style={{
                                 flex: 1, paddingVertical: 20, borderBottomColor: activePage === 0 ? "white" : "transparent",
@@ -211,9 +338,9 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                                 color: activePage === 0 ? "white" : "rgb(150,150,150)", textAlign: "center",
                                 fontFamily: loaded && "Montserrat-SemiBold",
                             }}>Details</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
 
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             onPress={() => setactivePage(1)}
                             style={{
                                 flex: 1, paddingVertical: 20, borderBottomColor: activePage === 1 ? "white" : "transparent",
@@ -223,16 +350,16 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                                 color: activePage === 1 ? "white" : "rgb(150,150,150)", textAlign: "center",
                                 fontFamily: loaded && "Montserrat-SemiBold",
                             }}>Owners</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
 
                         <TouchableOpacity
-                            onPress={() => setactivePage(2)}
+                            onPress={() => setactivePage(0)}
                             style={{
-                                flex: 1, paddingVertical: 20, borderBottomColor: activePage === 2 ? "white" : "transparent",
-                                borderBottomWidth: activePage === 2 ? 1 : 0,
+                                flex: 1, paddingVertical: 20, borderBottomColor: activePage === 0 ? "white" : "transparent",
+                                borderBottomWidth: activePage === 0 ? 1 : 0,
                             }}>
                             <Text style={{
-                                color: activePage === 2 ? "white" : "rgb(150,150,150)", textAlign: "center",
+                                color: activePage === 0 ? "white" : "rgb(150,150,150)", textAlign: "center",
                                 fontFamily: loaded && "Montserrat-SemiBold",
                             }}>History</Text>
                         </TouchableOpacity>
@@ -240,9 +367,10 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
 
                     <View style={{ marginTop: 20 }}>
                         {
-                            activePage === 0 ? <Detail /> :
-                                activePage === 1 ? <Owners /> :
-                                    <Histories />
+                            activePage === 0 && <Histories sales={saleHistories} />
+                            // :
+                            //     activePage === 1 ? <Owners /> :
+                            //         <Histories />
                         }
                     </View>
 

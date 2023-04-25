@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react'
 import RootComponent from '../components/RootComponent'
 import { useLoadingFonts } from '../../utilities/LoadingFonts'
 import { BlurView } from 'expo-blur'
-import { AntDesign, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, Entypo, Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 // import { SwipeablePanel } from 'rn-swipeable-panel';
 import NFTViewer from '../components/NFTViewer'
 import useNftHooks from '../hooks/nftHooks'
@@ -185,11 +185,12 @@ const HomeScreen = ({ navigation }) => {
                     !(Object.keys(data).length === 0) &&
                     <View style={{ flexDirection: "row", marginVertical: 15, alignItems: "center", justifyContent: "center", gap: 10 }}>
                         {
-                            data.previous && <TouchableOpacity style={{ backgroundColor: "rgb(99, 102, 241)", padding: 10, paddingHorizontal: 14.5, borderRadius: 100 }}
+                            data.previous && <TouchableOpacity style={{ backgroundColor: "rgb(99, 102, 241)", padding: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", paddingHorizontal: 14.5, borderRadius: 100 }}
                                 onPress={() => callingTheNestedData(activePage - 1)}
                             >
 
-                                <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white" }}>Previous</Text>
+                                <Entypo name="chevron-left" size={15} color="white" />
+                                <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white", fontSize: 13 }}>Previous</Text>
                             </TouchableOpacity>
                         }
                         {
@@ -197,14 +198,17 @@ const HomeScreen = ({ navigation }) => {
                                 <TouchableOpacity style={{ backgroundColor: activePage === it ? "white" : "rgb(99, 102, 241)", padding: 10, paddingHorizontal: 14.5, borderRadius: 100 }}
                                     key={it.toString()}
                                     onPress={() => prefixedPaginate(it)}
-                                ><Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: activePage === it ? "black" : "white" }}>{it}</Text></TouchableOpacity>
+                                ><Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: activePage === it ? "black" : "white" }}>{it}</Text>
+
+                                </TouchableOpacity>
                             </>))
                         }
                         {
-                            data.next && <TouchableOpacity style={{ backgroundColor: "rgb(99, 102, 241)", padding: 10, paddingHorizontal: 14.5, borderRadius: 100 }}
+                            data.next && <TouchableOpacity style={{ backgroundColor: "rgb(99, 102, 241)", padding: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", paddingHorizontal: 14.5, borderRadius: 100 }}
                                 onPress={() => callingTheNestedData(activePage + 1)}
                             >
-                                <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white" }}>Next</Text>
+                                <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white", fontSize: 13 }}>Next</Text>
+                                <Entypo name="chevron-right" size={15} color="white" />
                             </TouchableOpacity>
                         }
                     </View>

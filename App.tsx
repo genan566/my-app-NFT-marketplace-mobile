@@ -9,7 +9,7 @@ import { Camera, CameraType } from 'expo-camera';
 import { StatusBar } from 'expo-status-bar';
 import { useLoadingFonts, } from './utilities/LoadingFonts';
 import StartScreen from './src/screens/StartScreen';
-import ClientTABS from './src/NAVIGATIONS/TABS/ClientTABS';
+import ClientTABS, { HomeScreenssScreen } from './src/NAVIGATIONS/TABS/ClientTABS';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
@@ -77,7 +77,8 @@ function App() {
           <Stack.Screen name="Detail" component={DetailsScreen} />
         </Stack.Navigator> */}
 
-                  <ClientTABS />
+                  {/* <ClientTABS /> */}
+                  <HomeScreenssScreen />
                   {/* <Drawer.Navigator>
         <Drawer.Screen name="Home" component={HomeScreen} />
         <Drawer.Screen name="Detail" component={DetailsScreen} />
