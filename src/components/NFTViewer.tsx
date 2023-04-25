@@ -10,10 +10,18 @@ import { SaleHistoriesAPI } from '../APIs/SaleHistoriesAPI'
 import { SaleHistory } from '../types/SaleHistoryType'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Feather, Ionicons } from '@expo/vector-icons'
+import { RootNftContext, RootUserTokenContext } from '../contexts'
+import { UserRetrieveInterface } from '../types/UserRetrieveTypes'
+import { AuthAPI } from '../APIs/AuthApi'
+import { routeAPIBaseImage } from '../APIs/APIRoutes'
+import { CategoriesTrendingAPI } from '../APIs/CategoriesTrending'
+import { CategoriesTrending } from '../types/CategorieTrendingType'
 const NFTViewer = ({ data, callActionView }: { data: any, callActionView: () => void }) => {
     const { height } = useDimensionSizes()
     const { loaded } = useLoadingFonts()
     const [saleHistories, setSaleHistories] = React.useState<SaleHistory[]>([])
+    const nftContext = React.useContext(RootNftContext)
+    const [categories, setCategories] = React.useState<CategoriesTrending[]>([])
 
     React.useEffect(() => {
         load_sale_histories()
@@ -33,6 +41,72 @@ const NFTViewer = ({ data, callActionView }: { data: any, callActionView: () => 
         }
     }
 
+
+
+
+    const load_categories = async () => {
+        if (Boolean(data.categories_trending?.length)) {
+            {
+
+                // categories_trending.map(it => {
+                //     let idX = it
+                //     let categories_trendings = new CategoriesTrendingAPI()
+                //     categories_trendings
+                //         .get_categorie(idX)
+                //         .then(data => {
+                //             let checker = { id: data.id, name: data.name }
+                //             if ((categorie?.id !== checker.id) && categorie?.name !== checker.name) {
+                //                 setCategorie(data)
+                //             }
+                //         })
+                // })
+
+                let categories_trendings = new CategoriesTrendingAPI()
+                categories_trendings
+                    .get_multi_categorie(data.categories_trending)
+                    .then(data => {
+                        if (data.results.length > 0) {
+                            setCategories([...data.results])
+                        }
+                    })
+            }
+        }
+    }
+
+    React.useEffect(() => {
+        load_categories()
+    }, [data.categories_trending])
+
+
+
+    const userTokenContext = React.useContext(RootUserTokenContext)
+
+
+    const [userRetrieveData, setuserRetrieveData] = React.useState<UserRetrieveInterface>({} as UserRetrieveInterface)
+
+    React.useEffect(() => {
+        let respAuth = new AuthAPI()
+        if (userTokenContext.token !== "") {
+            let token = userTokenContext.token
+            respAuth
+                .retrive_account(token, data.user_suscribed)
+                .then(res => {
+                    let formatedData = {
+                        email: res.email,
+                        id: res.id,
+                        name: res.name,
+                        pseudo: res.pseudo,
+                        is_superuser: res.is_superuser,
+                        is_staff: res.is_staff,
+                        image: routeAPIBaseImage + res.image.toString(),
+                    }
+
+                    setuserRetrieveData
+                        (formatedData)
+
+                })
+        }
+    }, [])
     const calculatedSalesAdded = React.useMemo(() => {
         if (saleHistories.length > 0) {
             return saleHistories.length > 1000 ? `${saleHistories.length / 1000}K`
@@ -98,9 +172,26 @@ const NFTViewer = ({ data, callActionView }: { data: any, callActionView: () => 
                                 source={require("../../assets/images/1.png")} />
                         </View>
                     </View>
-                    <View style={{ width: "100%", marginBottom: 15 }}>
-                        <Text style={{ fontFamily: loaded && "Montserrat-Medium", fontSize: 28, color: "white", width: "50%" }} numberOfLines={1} >{data.title}</Text>
-                        <Text style={{ fontFamily: loaded && "Montserrat-Medium", fontSize: 22, color: "white", width: "90%" }} numberOfLines={1} >{data.description}</Text>
+                    <View style={{ paddingHorizontal: 10 ,width: "100%",}}>
+                        <View style={{ width: "100%", marginBottom: 15 }}>
+                            <Text style={{ fontFamily: loaded && "Montserrat-Medium", fontSize: 28, color: "white", width: "50%" }} numberOfLines={1} >{data.title}</Text>
+                            <Text style={{ fontFamily: loaded && "Montserrat-Medium", fontSize: 22, color: "white", width: "90%" }} numberOfLines={1} >{data.description}</Text>
+                        </View>
+                        <View style={{ alignItems: "flex-start", marginBottom: 10, flexDirection: "row", width: "100%", flexWrap: "wrap", justifyContent: "flex-start" }}>
+                            {
+                                categories?.map(it => {
+                                    return (
+                                        <TouchableOpacity
+                                            style={{
+                                                paddingHorizontal: 20, backgroundColor: "transparent",
+                                                borderColor: "rgb(99, 102, 241)", borderWidth: 1, paddingVertical: 8, borderRadius: 50, marginRight: 10, marginTop: 10
+                                            }}>
+                                            <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white", fontSize: 14 }}>{it.name}</Text>
+                                        </TouchableOpacity>
+                                    )
+                                })
+                            }
+                        </View>
                     </View>
                     <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
 
