@@ -146,8 +146,8 @@ const NFTViewer = ({ data, callActionView }: { data: any, callActionView: () => 
                     zIndex: 2, alignItems: "center", justifyContent: "flex-end", padding: 10
                 }}>
                     <View style={{ position: "absolute", top: 10, left: 10, overflow: "hidden", borderRadius: 100 }}>
-                        <BlurView intensity={20} tint="dark" style={{
-                            padding: 2.5, paddingHorizontal: 10, elevation: 10, display: "flex",
+                        <BlurView intensity={30} tint="light" style={{
+                            padding: 4.5, paddingHorizontal: 15, elevation: 10, display: "flex",
                             justifyContent: 'space-between', flexDirection: "row", alignItems: "center"
                         }}>
                             <View style={{
@@ -156,7 +156,7 @@ const NFTViewer = ({ data, callActionView }: { data: any, callActionView: () => 
                             }}>
                                 <Ionicons name="people-circle" size={24} color="white" />
                                 <View>
-                                    <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: loaded && "Montserrat-Medium", }}>Followers</Text>
+                                    {/* <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: loaded && "Montserrat-Medium", }}>Followers</Text> */}
                                     <Text style={{ color: "white", fontFamily: loaded && "Montserrat-SemiBold", fontSize: 20, marginTop: 2.5 }}>{calculatedSalesAdded || 0}</Text>
                                 </View>
                             </View>
@@ -195,19 +195,19 @@ const NFTViewer = ({ data, callActionView }: { data: any, callActionView: () => 
                     </View>
                     <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
 
-                        <View style={{ overflow: "hidden", backgroundColor: "rgba(82, 82, 79,.8)", borderRadius: 100 }}>
-                            <BlurView intensity={20} tint="dark" style={{
-                                padding: 8, paddingHorizontal: 20, elevation: 10, display: "flex",
+                        <View style={{ overflow: "hidden",  borderRadius: 100 }}>
+                            <BlurView intensity={30} tint="light" style={{
+                                padding: 4, paddingHorizontal: 20, elevation: 10, display: "flex",
                                 justifyContent: 'space-between', flexDirection: "row", alignItems: "center"
                             }}>
                                 <View style={{
                                     display: "flex",
                                     justifyContent: 'space-between', flexDirection: "row", gap: 10, alignItems: "center"
                                 }}>
-                                    <Feather name="layers" size={24} color="white" />
+                                    <Feather name="layers" size={20} color="white" />
                                     <View>
-                                        <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: loaded && "Montserrat-Medium", }}>Current Bid</Text>
-                                        <Text style={{ color: "white", fontFamily: loaded && "Montserrat-SemiBold", fontSize: 20, marginTop: 2.5 }}>{data.price}ETH</Text>
+                                        <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: loaded && "Montserrat-Medium", fontSize: 12 }}>Current Bid</Text>
+                                        <Text style={{ color: "white", fontFamily: loaded && "Montserrat-SemiBold", fontSize: 17, marginTop: 2.5 }}>{data.price}ETH</Text>
                                     </View>
                                 </View>
                             </BlurView>

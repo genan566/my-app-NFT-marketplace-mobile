@@ -138,10 +138,10 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                         }}
                     >
 
-                        <Icon name="close-circle-outline"
+                        <Icon name="close-circle"
                             style={{
-                                width: 20,
-                                height: 20,
+                                width: 27,
+                                height: 27,
                                 tintColor: "white",
                                 alignSelf: 'center',
                             }} />
@@ -149,8 +149,8 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
 
                     <Text
                         style={{ fontFamily: loaded && "Montserrat-Medium", fontSize: 22.5, color: "white", }}>Detail Product NFT</Text>
-
-                    <TouchableOpacity
+                    <View style={{ width: 50 }} />
+                    {/* <TouchableOpacity
                         activeOpacity={.8}
                         style={{
                             borderRadius: 50,
@@ -172,7 +172,7 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                                 tintColor: "white",
                                 alignSelf: 'center',
                             }} />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
 
                 <ScrollView contentContainerStyle={{ paddingHorizontal: 20, marginTop: 85 }}>
@@ -191,10 +191,7 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
 
                     <TouchableHighlight style={{ marginTop: 15 }}>
                         {/* <Text style={{ color: "white", fontFamily: loaded && "Montserrat-SemiBold", fontSize: 20, marginTop: 2.5 }}>D'EVELs</Text> */}
-                        <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: loaded && "Montserrat-Medium", }}>It is with this company that I started to take my marks
-                            in the field of Web Development. I had to get up to speed with the basic technologies to code Web applications.  I got closer to the developers to
-                            get in touch with them and familiarize myself with the tools and
-                            techniques that the company uses to manage its products.</Text>
+                        <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: loaded && "Montserrat-Medium", }}>{nftContext?.nftData?.description}</Text>
                     </TouchableHighlight>
 
 
