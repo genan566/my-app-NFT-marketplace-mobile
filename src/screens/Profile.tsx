@@ -5,6 +5,7 @@ import RootComponent from '../components/RootComponent';
 
 import { Divider, Icon, Input } from "@ui-kitten/components";
 import { BlurView } from 'expo-blur';
+import * as Animatable from 'react-native-animatable';
 
 const WIDTH = Dimensions.get("screen").width;
 const HEIGHT = Dimensions.get("screen").height;
@@ -16,6 +17,30 @@ import { AuthAPI } from '../APIs/AuthApi';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { RootUserContext, RootUserTokenContext, ValuesTypes } from '../contexts';
 import { writeItemToStorage } from '../../utilities/SettingToLocalsStorage';
+import userDataHooks from '../hooks/userDataHooks';
+
+const zoomFromPrincipale = {
+    0: {
+        opacity: 0,
+    },
+    1: {
+        opacity: 1,
+    }
+
+}
+
+const zoomFromSecondary = {
+    0: {
+        scale: .8,
+        translateY: -30,
+    },
+    1: {
+        scale: 1,
+        translateY: 0,
+    }
+
+}
+
 
 const Profile = ({ navigation }) => {
     const [showModalsLogin, setshowModalsLogin] = React.useState<boolean>(false)
@@ -24,7 +49,7 @@ const Profile = ({ navigation }) => {
     const [errorOnLogin, setErrorOnLogin] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const userTokenContext = React.useContext(RootUserTokenContext)
-    const userContext = React.useContext(RootUserContext)
+    const { dataUser } = userDataHooks()
     const { removeItem } = useAsyncStorage('@storage_APIKEY');
 
 
@@ -62,30 +87,6 @@ const Profile = ({ navigation }) => {
 
     }
 
-    const loadOrNotToken = () => {
-        let respAuth = new AuthAPI()
-        if (userTokenContext.token !== "") {
-            let token = userTokenContext.token
-            respAuth
-                .retrive_me__account(token)
-                .then(res => {
-                    if (Boolean(res?.id)) {
-                        userContext?.setUser(res)
-                        writeItemToStorage(token)
-                    }
-                })
-        }
-
-        else {
-            userContext?.setUser({} as any)
-        }
-
-
-    }
-
-    React.useEffect(() => {
-        loadOrNotToken()
-    }, [userTokenContext.token])
 
 
     return (
@@ -93,10 +94,17 @@ const Profile = ({ navigation }) => {
         <RootComponent>
 
             {
-                !(userTokenContext.token) && showModalsLogin && <View style={{
-                    position: "absolute", backgroundColor: "rgba(10,10,10,.5)", top: 0, left: 0, bottom: 0,
-                    right: 0, zIndex: 10, width: "100%", height: "100%"
-                }}>
+                !(userTokenContext.token) && showModalsLogin && <Animatable.View
+
+                    // delay={stateDelay}
+                    duration={500}
+                    easing={"ease-in-back"}
+                    animation={zoomFromPrincipale}
+
+                    style={{
+                        position: "absolute", backgroundColor: "rgba(10,10,10,.5)", top: 0, left: 0, bottom: 0,
+                        right: 0, zIndex: 10, width: "100%", height: "100%"
+                    }}>
                     <BlurView intensity={20} tint="dark" style={{
                         flex: 1,
                         elevation: 10, display: "flex",
@@ -106,10 +114,15 @@ const Profile = ({ navigation }) => {
                             contentContainerStyle={{ alignItems: "center" }}
                         >
 
-                            <View style={{
-                                width: "90%", backgroundColor: "#0f071d", marginTop: HEIGHT * .18,
-                                padding: 25, borderRadius: 10, elevation: 10, position: "relative"
-                            }}>
+                            <Animatable.View
+                                easing={"ease-in-back"}
+                                // delay={300}
+                                duration={500}
+                                animation={zoomFromSecondary}
+                                style={{
+                                    width: "90%", backgroundColor: "#0f071d", marginTop: HEIGHT * .18,
+                                    padding: 25, borderRadius: 10, elevation: 10, position: "relative"
+                                }}>
                                 <TouchableOpacity
                                     activeOpacity={.8}
                                     style={{
@@ -190,7 +203,7 @@ const Profile = ({ navigation }) => {
                                         onPress={() => submitForLogin()}
                                         disabled={loading}
                                         style={{
-                                            backgroundColor: "rgba(59, 130, 246,.5)", display: "flex",
+                                            backgroundColor: "rgb(99, 102, 241)", display: "flex",
                                             justifyContent: "center", alignItems: "center", padding: 12.5, borderRadius: 5, flexDirection: "row",
                                         }}>
 
@@ -199,7 +212,7 @@ const Profile = ({ navigation }) => {
                                             fontFamily: "Montserrat-Medium",
                                         }}>Submit</Text>
                                         {
-                                            loading && <ActivityIndicator size="small" style={{ marginLeft: 10 }} color="rgb(99, 102, 241)" />
+                                            loading && <ActivityIndicator size="small" style={{ marginLeft: 10 }} color="white" />
                                         }
                                     </TouchableOpacity>
                                 </View>
@@ -218,12 +231,12 @@ const Profile = ({ navigation }) => {
                                         }}>Sign Up</Text>
                                     </TouchableOpacity>
                                 </View>
-                            </View>
+                            </Animatable.View>
 
                             <View style={{ height: HEIGHT * .3 }} />
                         </ScrollView>
                     </BlurView>
-                </View>
+                </Animatable.View>
             }
             <View style={{
                 display: "flex",
@@ -252,10 +265,10 @@ const Profile = ({ navigation }) => {
                     onPress={() => navigation.goBack()}
                 >
 
-                    <Icon name="arrow-circle-left-outline"
+                    <Icon name="arrow-circle-left"
                         style={{
-                            width: 20,
-                            height: 20,
+                            width: 25,
+                            height: 25,
                             tintColor: "rgb(99, 102, 241)",
                             alignSelf: 'center',
                         }} />
@@ -299,7 +312,7 @@ const Profile = ({ navigation }) => {
                             zIndex: 5,
                         }} />
 
-                    <Image source={userContext.user.image ? { uri: userContext.user.image } : require("../../assets/images/1.png")} style={{
+                    <Image source={dataUser.image ? { uri: dataUser.image } : require("../../assets/images/1.png")} style={{
                         width: "100%", height: "100%"
                     }} />
                     <View style={{
@@ -307,7 +320,7 @@ const Profile = ({ navigation }) => {
                         height: 100, borderWidth: 5, borderColor: "#fff", borderRadius: 50, zIndex: 6
                     }}>
                         <Image
-                            source={userContext.user.image ? { uri: userContext.user.image } : require("../../assets/images/1.png")}
+                            source={dataUser.image ? { uri: dataUser.image } : require("../../assets/images/1.png")}
                             style={{
                                 width: "100%", height: "100%", borderRadius: 50,
                             }} />
@@ -315,8 +328,8 @@ const Profile = ({ navigation }) => {
                 </View>
 
                 <View style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: 55 }}>
-                    <Text style={{ color: "white", fontSize: 24, marginBottom: 5, fontFamily: "Montserrat-Medium", }}>{userContext.user.name || "Non défini"}</Text>
-                    <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: "Montserrat-Medium", }}>{userContext.user.email || "Non défini"}</Text>
+                    <Text style={{ color: "white", fontSize: 24, marginBottom: 5, fontFamily: "Montserrat-Medium", }}>{dataUser.name || "Non défini"}</Text>
+                    <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: "Montserrat-Medium", }}>{dataUser.email || "Non défini"}</Text>
                 </View>
 
                 <View style={{ paddingHorizontal: 25, marginTop: 15 }}>

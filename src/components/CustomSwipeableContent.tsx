@@ -200,13 +200,15 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                         {
                             categories?.map(it => {
                                 return (
-                                    <TouchableOpacity
-                                        style={{
-                                            paddingHorizontal: 20, backgroundColor: "transparent",
-                                            borderColor: "rgb(99, 102, 241)", borderWidth: 1, paddingVertical: 10, borderRadius: 50, marginRight: 10, marginTop: 10
-                                        }}>
-                                        <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white" }}>{it.name}</Text>
-                                    </TouchableOpacity>
+                                    <TouchableHighlight>
+                                        <TouchableOpacity
+                                            style={{
+                                                paddingHorizontal: 20, backgroundColor: "transparent",
+                                                borderColor: "rgb(99, 102, 241)", borderWidth: 1, paddingVertical: 10, borderRadius: 50, marginRight: 10, marginTop: 10
+                                            }}>
+                                            <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white" }}>{it.name}</Text>
+                                        </TouchableOpacity>
+                                    </TouchableHighlight>
                                 )
                             })
                         }

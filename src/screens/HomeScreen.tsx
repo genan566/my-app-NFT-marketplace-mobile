@@ -13,6 +13,7 @@ import { blurhash } from '../../utilities/Hasher'
 import ViewHiddenOfNFt from '../components/CustomSwipeableContent'
 import { RootNftContext, RootUserContext } from '../contexts'
 import { NftTypesValues } from '../types/NFTTypes'
+import userDataHooks from '../hooks/userDataHooks'
 
 const WIDTH = Dimensions.get("screen").width;
 const HEIGHT = Dimensions.get("screen").height;
@@ -21,7 +22,7 @@ const HEIGHT = Dimensions.get("screen").height;
 
 const HomeScreen = ({ navigation }) => {
     const { loaded } = useLoadingFonts()
-    const userContext = React.useContext(RootUserContext)
+    const { dataUser } = userDataHooks()
     const swipeUpDownRef = useRef();
     const [isPanelActive, setIsPanelActive] = useState(false);
     const [searchText, setSearchText] = React.useState("")
@@ -88,13 +89,9 @@ const HomeScreen = ({ navigation }) => {
                                 style={{ width: 20, height: 20 }}
                                 source={require("../../assets/images/ethereum.png")} />
                         </View>
-                        <Text style={{ color: "white", fontFamily: loaded && "Montserrat-SemiBold", fontSize: 16, }}>47.48</Text>
+                        <Text style={{ color: "white", fontFamily: loaded && "Montserrat-SemiBold", fontSize: 16,maxWidth:150 }} numberOfLines={1}>{`${dataUser.account_balance_eth}ETH` || "0.00ETH"}</Text>
                     </BlurView>
                 </TouchableOpacity>
-                <View>
-                    <Text style={{ color: "white", fontFamily: loaded && "Montserrat-Medium", fontSize: 17, textAlign: "center" }}>Discover the new </Text>
-                    <Text style={{ color: "white", fontFamily: loaded && "Montserrat-Medium", fontSize: 17, textAlign: "center" }}>NFT collection</Text>
-                </View>
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
                     <TouchableOpacity
                         onPress={() => navigation.navigate("Profile")}
@@ -102,13 +99,18 @@ const HomeScreen = ({ navigation }) => {
                         <Image
                             style={{ width: 45, height: 45 }}
                             resizeMode="cover"
-                            source={userContext.user.image ? { uri: userContext.user.image } : require("../../assets/images/1.png")} />
+                            source={dataUser.image ? { uri: dataUser.image } : require("../../assets/images/1.png")} />
                     </TouchableOpacity>
                     <TouchableOpacity style={{ backgroundColor: "transparent", padding: 5, borderWidth: 1, borderColor: "white", overflow: "hidden", borderRadius: 50, }}>
                         <MaterialCommunityIcons name="menu-swap-outline" size={24} color="white" />
                     </TouchableOpacity>
                 </View>
             </View>
+
+            <View style={{paddingHorizontal:20,marginTop:25}}>
+                    <Text style={{ color: "white", fontFamily: loaded && "Montserrat-Medium", fontSize: 25,  }}>Discover the new </Text>
+                    <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: loaded && "Montserrat-Medium", fontSize: 17,  }}>NFT collection</Text>
+                </View>
             <View style={{ paddingHorizontal: 20, paddingBottom: 20 }}>
 
                 <View style={{
