@@ -48,13 +48,13 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                                     .retrive_account(token, item.user_suscribed)
                                     .then(res => {
                                         let formatedData = {
-                                            email: res.email,
-                                            id: res.id,
-                                            name: res.name,
-                                            pseudo: res.pseudo,
-                                            is_superuser: res.is_superuser,
-                                            is_staff: res.is_staff,
-                                            image: routeAPIBaseImage + res.image.toString(),
+                                            email: res?.email,
+                                            id: res?.id,
+                                            name: res?.name,
+                                            pseudo: res?.pseudo,
+                                            is_superuser: res?.is_superuser,
+                                            is_staff: res?.is_staff,
+                                            image: routeAPIBaseImage + res?.image.toString(),
                                         }
 
                                         setuserRetrieveDataListForSales

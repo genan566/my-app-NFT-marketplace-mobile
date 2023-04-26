@@ -1,17 +1,133 @@
-import { View, Text, ScrollView, Dimensions, Image, TouchableOpacity } from 'react-native'
+import { View, Text, ScrollView, Dimensions, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
 import RootComponent from '../components/RootComponent';
 
-import { Icon } from "@ui-kitten/components";
+import { Divider, Icon, Input } from "@ui-kitten/components";
+import { BlurView } from 'expo-blur';
+
 const WIDTH = Dimensions.get("screen").width;
 const HEIGHT = Dimensions.get("screen").height;
 
+import { Image } from 'expo-image'
+import { blurhash } from '../../utilities/Hasher';
 
 const Profile = ({ navigation }) => {
+    const [showModalsLogin, setshowModalsLogin] = React.useState<boolean>(false)
     return (
 
         <RootComponent>
+
+            {
+                showModalsLogin && <View style={{
+                    position: "absolute", backgroundColor: "rgba(10,10,10,.5)", top: 0, left: 0, bottom: 0,
+                    right: 0, zIndex: 10, width: "100%", height: "100%"
+                }}>
+                    <BlurView intensity={20} tint="dark" style={{
+                        flex: 1,
+                        elevation: 10, display: "flex",
+                        justifyContent: 'center', flexDirection: "row", alignItems: "center"
+                    }}>
+                        <View style={{ width: "90%", backgroundColor: "#0f071d", padding: 25, borderRadius: 10, elevation: 10, position: "relative" }}>
+                            <TouchableOpacity
+                                activeOpacity={.8}
+                                style={{
+                                    borderRadius: 50,
+                                    top: 15, right: 15,
+                                    overflow: "hidden",
+                                    width: 35, height: 35,
+                                    position: "absolute",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    backgroundColor: "#1a202c"
+                                }}
+                                onPress={() => setshowModalsLogin(false)}
+                            >
+
+                                <Icon name="close"
+                                    style={{
+                                        width: 20,
+                                        height: 20,
+                                        tintColor: "rgb(99, 102, 241)",
+                                        alignSelf: 'center',
+                                    }} />
+                            </TouchableOpacity>
+                            <Image
+                                style={{ height: WIDTH * .15, width: WIDTH * .15, alignSelf: "center" }}
+                                source={require("../../assets/images/nft.png")}
+                                placeholder={blurhash}
+                                contentFit="cover"
+                                transition={1000}
+                            />
+                            <Text style={{
+                                color: "white", fontFamily: "Montserrat-SemiBold",
+                                fontSize: 20, marginTop: 12.5, alignSelf: "center",
+                            }}>Sign In</Text>
+                            <Text style={{
+                                color: "rgba(255,255,255,.5)", fontFamily: "Montserrat-SemiBold",
+                                fontSize: 12, marginTop: 12.5, alignSelf: "center",
+                            }}>Please login to your account</Text>
+
+                            <Divider style={{ marginTop: 15, backgroundColor: "rgba(255,255,255,.2)" }} />
+
+                            <View style={{ marginTop: 20 }}>
+                                <Text style={{
+                                    color: "rgba(255,255,255,.8)", fontFamily: "Montserrat-SemiBold",
+                                    fontSize: 12, marginTop: 5.5, alignSelf: "center", marginBottom: 5
+                                }}>Your Email</Text>
+
+                                <Input
+                                    placeholder='Ex: xxx@gmail.com'
+                                    style={{ marginTop: 10, backgroundColor: "transparent" }}
+                                />
+                            </View>
+
+
+                            <View style={{ marginTop: 15 }}>
+                                <Text style={{
+                                    color: "rgba(255,255,255,.8)", fontFamily: "Montserrat-SemiBold",
+                                    fontSize: 12, marginTop: 5.5, alignSelf: "center", marginBottom: 5
+                                }}>Your Password</Text>
+
+                                <Input
+                                    placeholder='Ex: xxxxx.xxx'
+                                    style={{ marginTop: 10, backgroundColor: "transparent" }}
+                                />
+                            </View>
+
+                            <View style={{ marginTop: 15 }}>
+                                <TouchableOpacity
+                                    style={{
+                                        backgroundColor: "rgba(59, 130, 246,.5)", display: "flex",
+                                        justifyContent: "center", alignItems: "center", padding: 12.5, borderRadius: 5, flexDirection: "row",
+                                    }}>
+
+                                    <Text style={{
+                                        color: "white", fontSize: 18,
+                                        fontFamily: "Montserrat-Medium",
+                                    }}>Submit</Text>
+                                </TouchableOpacity>
+                            </View>
+
+                            <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 20 }}>
+                                <Text style={{
+                                    color: "rgba(255,255,255,.5)", fontFamily: "Montserrat-SemiBold",
+                                    fontSize: 12, alignSelf: "center",
+                                }}>You have not an account yet /
+                                </Text>
+
+                                <TouchableOpacity>
+                                    <Text style={{
+                                        color: "rgba(255,255,255,.9)", fontFamily: "Montserrat-SemiBold",
+                                        fontSize: 12, alignSelf: "center", marginLeft: 5
+                                    }}>Sign Up</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </BlurView>
+                </View>
+            }
             <View style={{
                 display: "flex",
                 flexDirection: "row",
@@ -106,11 +222,7 @@ const Profile = ({ navigation }) => {
 
                 <View style={{ paddingHorizontal: 25, marginTop: 15 }}>
                     <TouchableOpacity
-                        // onPress={async () => {
-                        //     setLoading(true);
-                        //     dispatch(cleanStore())
-                        //     await signOut()
-                        // }}
+                        onPress={() => setshowModalsLogin(true)}
                         style={{
                             backgroundColor: "rgb(99, 102, 241)", display: "flex",
                             justifyContent: "center", alignItems: "center", padding: 8, borderRadius: 5, flexDirection: "row",
