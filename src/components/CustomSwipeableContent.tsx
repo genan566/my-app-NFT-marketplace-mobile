@@ -43,7 +43,7 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                         data.map((item: any) => {
                             let respAuth = new AuthAPI()
                             if (userTokenContext.token !== "") {
-                                let token = userTokenContext.token
+                                let token = JSON.parse(userTokenContext.token)
                                 respAuth
                                     .retrive_account(token, item.user_suscribed)
                                     .then(res => {
@@ -54,7 +54,7 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                                             pseudo: res?.pseudo,
                                             is_superuser: res?.is_superuser,
                                             is_staff: res?.is_staff,
-                                            image: routeAPIBaseImage + res?.image.toString(),
+                                            image: routeAPIBaseImage + res?.image?.toString(),
                                         }
 
                                         setuserRetrieveDataListForSales

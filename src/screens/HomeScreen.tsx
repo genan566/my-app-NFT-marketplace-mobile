@@ -11,7 +11,7 @@ import SwipeUpDown from 'react-native-swipe-up-down';
 import { Icon } from '@ui-kitten/components'
 import { blurhash } from '../../utilities/Hasher'
 import ViewHiddenOfNFt from '../components/CustomSwipeableContent'
-import { RootNftContext } from '../contexts'
+import { RootNftContext, RootUserContext } from '../contexts'
 import { NftTypesValues } from '../types/NFTTypes'
 
 const WIDTH = Dimensions.get("screen").width;
@@ -21,6 +21,7 @@ const HEIGHT = Dimensions.get("screen").height;
 
 const HomeScreen = ({ navigation }) => {
     const { loaded } = useLoadingFonts()
+    const userContext = React.useContext(RootUserContext)
     const swipeUpDownRef = useRef();
     const [isPanelActive, setIsPanelActive] = useState(false);
     const [searchText, setSearchText] = React.useState("")
@@ -101,7 +102,7 @@ const HomeScreen = ({ navigation }) => {
                         <Image
                             style={{ width: 45, height: 45 }}
                             resizeMode="cover"
-                            source={require("../../assets/images/1.png")} />
+                            source={userContext.user.image ? { uri: userContext.user.image } : require("../../assets/images/1.png")} />
                     </TouchableOpacity>
                     <TouchableOpacity style={{ backgroundColor: "transparent", padding: 5, borderWidth: 1, borderColor: "white", overflow: "hidden", borderRadius: 50, }}>
                         <MaterialCommunityIcons name="menu-swap-outline" size={24} color="white" />
@@ -196,7 +197,7 @@ const HomeScreen = ({ navigation }) => {
                         {
                             castedCount.map(it => (<>
                                 <TouchableOpacity style={{ backgroundColor: activePage === it ? "white" : "rgb(99, 102, 241)", padding: 10, paddingHorizontal: 14.5, borderRadius: 100 }}
-                                    key={it.toString()}
+                                    key={it?.toString()}
                                     onPress={() => prefixedPaginate(it)}
                                 ><Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: activePage === it ? "black" : "white" }}>{it}</Text>
 

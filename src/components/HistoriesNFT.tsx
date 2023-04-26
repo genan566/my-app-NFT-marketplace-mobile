@@ -26,7 +26,7 @@ const Histories = ({ sales = [] }: { sales: SaleHistory[] }) => {
                     flexDirection: "row", justifyContent: "space-between", flexWrap: "wrap", marginBottom: 15, borderBottomWidth: 1,
                     paddingVertical: 10, borderColor: "rgba(100,100,100,.5)",
                 }}>
-                    <Text style={{ flex: 1, color: "white", fontFamily: "Montserrat-Medium", }}>Email</Text>
+                    <Text style={{ flex: 1.1, color: "white", fontFamily: "Montserrat-Medium", }}>Email</Text>
                     <Text style={{ flex: 1, color: "white", fontFamily: "Montserrat-Medium", }}>Price ETH</Text>
                     <Text style={{ flex: 1, color: "white", fontFamily: "Montserrat-Medium", }}>Creation Date</Text>
                     <Text style={{ flex: 1, color: "white", fontFamily: "Montserrat-Medium", }}>End Date</Text>

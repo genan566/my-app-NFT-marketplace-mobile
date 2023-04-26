@@ -1,5 +1,4 @@
 import axios from "axios";
-import { notify } from "../utilities/Toaster";
 import { api_url } from "./APIRoutes";
 
 interface DataForm {
@@ -54,7 +53,7 @@ export class AuthAPI {
     async retrive_account(token: string, id: number) {
         if (token) {
             return fetch(
-                api_url('user/retrieve/' + id.toString()),
+                api_url('user/retrieve/' + id?.toString()),
                 {
                     method: "GET",
                     headers: {
@@ -75,7 +74,7 @@ export class AuthAPI {
     async retrive_account_update(token: string, id: number | undefined, data: any) {
         if (token && id) {
             return fetch(
-                api_url('user/retrieve/' + id.toString()),
+                api_url('user/retrieve/' + id?.toString()),
                 {
                     method: "PATCH",
                     headers: {

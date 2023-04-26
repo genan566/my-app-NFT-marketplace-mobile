@@ -1,6 +1,9 @@
 import React from "react"
 import { NftTypesValues } from "../types/NFTTypes"
 import { UserTypesValues } from "../types/UserTypeValues"
+import { useAsyncStorage } from "@react-native-async-storage/async-storage"
+import { AuthAPI } from "../APIs/AuthApi"
+import { writeItemToStorage } from "../../utilities/SettingToLocalsStorage"
 
 
 export type UserTokenTypesValues = {
@@ -68,7 +71,19 @@ export const RootNFTContextProvider = ({ children }: { children: React.ReactNode
 
 
 export const RootUserTokenProvider = ({ children }: { children: React.ReactNode }) => {
+
+    const userContext = React.useContext(RootUserContext)
+    const { getItem, } = useAsyncStorage('@storage_APIKEY');
     const [token, setToken] = React.useState<string>("")
+
+    const readItemFromStorage = async () => {
+        const item = await getItem();
+        item && setToken(item)
+    };
+
+    React.useEffect(() => {
+        readItemFromStorage()
+    }, [])
 
     return <RootUserTokenContext.Provider value={{ token, setToken }}>
         {children}

@@ -17,7 +17,7 @@ import { EvaIconsPack } from '@ui-kitten/eva-icons';
 LogBox.ignoreAllLogs();
 
 import * as eva from '@eva-design/eva';
-import { RootAdminEditableUserContextProvider, RootCreatorProvider, RootNFTContextProvider, RootUserContextProvider } from './src/contexts';
+import { RootAdminEditableUserContextProvider, RootCreatorProvider, RootNFTContextProvider, RootUserContextProvider, RootUserTokenProvider } from './src/contexts';
 
 function DetailsScreen() {
   return (
@@ -63,32 +63,20 @@ function App() {
       {/* <Initializer> */}
       <RootAdminEditableUserContextProvider>
         <RootCreatorProvider>
-          <RootUserContextProvider>
-            <RootNFTContextProvider>
-              <IconRegistry icons={EvaIconsPack} />
-              <ApplicationProvider {...eva} theme={eva.light}>
-                <NavigationContainer>
-                  {/* <Stack.Navigator
-          screenOptions={{
-            headerShown: false
-          }}
-        >
-          <Stack.Screen name="Home" component={StartScreen} />
-          <Stack.Screen name="Detail" component={DetailsScreen} />
-        </Stack.Navigator> */}
+          <RootUserTokenProvider>
+            <RootUserContextProvider>
+              <RootNFTContextProvider>
+                <IconRegistry icons={EvaIconsPack} />
+                <ApplicationProvider {...eva} theme={eva.light}>
+                  <NavigationContainer>
+                    <HomeScreenssScreen />
+                  </NavigationContainer>
 
-                  {/* <ClientTABS /> */}
-                  <HomeScreenssScreen />
-                  {/* <Drawer.Navigator>
-        <Drawer.Screen name="Home" component={HomeScreen} />
-        <Drawer.Screen name="Detail" component={DetailsScreen} />
-      </Drawer.Navigator> */}
-                </NavigationContainer>
-
-                <StatusBar style="auto" />
-              </ApplicationProvider>
-            </RootNFTContextProvider>
-          </RootUserContextProvider>
+                  <StatusBar style="auto" />
+                </ApplicationProvider>
+              </RootNFTContextProvider>
+            </RootUserContextProvider>
+          </RootUserTokenProvider>
         </RootCreatorProvider>
       </RootAdminEditableUserContextProvider>
       {/* </Initializer> */}

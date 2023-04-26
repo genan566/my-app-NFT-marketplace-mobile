@@ -98,7 +98,7 @@ const NFTViewer = ({ data, callActionView }: { data: any, callActionView: () => 
                         pseudo: res.pseudo,
                         is_superuser: res.is_superuser,
                         is_staff: res.is_staff,
-                        image: routeAPIBaseImage + res.image.toString(),
+                        image: routeAPIBaseImage + res.image?.toString(),
                     }
 
                     setuserRetrieveData
