@@ -4,7 +4,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../../screens/HomeScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import Profile from '../../screens/Profile';
-
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import FAQs from '../../screens/FAQs';
+import Settings from '../../screens/Settings';
+import DrawerContent from '../DrawerContent';
 
 
 const HomeScreenss = createStackNavigator();
@@ -20,7 +23,7 @@ export class HomeScreenssScreen extends Component {
 
                 initialRouteName={'Home'}
             >
-                <HomeScreenss.Screen name="Home" component={HomeScreen} />
+                <HomeScreenss.Screen name="Home" component={DrawerNavigator} />
                 <HomeScreenss.Screen name="Profile" component={Profile} />
             </HomeScreenss.Navigator>
         )
@@ -29,6 +32,26 @@ export class HomeScreenssScreen extends Component {
 
 
 
+const Drawer = createDrawerNavigator();
+
+export const DrawerNavigator = () => {
+    return (
+        <Drawer.Navigator
+            drawerType="slide"
+            screenOptions={{
+                headerShown: false,
+                drawerType: "back",
+            }}
+            initialRouteName={"Diagnostics"}
+          drawerContent={props => <DrawerContent {...props} />}
+        >
+            {/* <Drawer.Screen name='HomeFullDiag' component={HomeD} /> */}
+            <Drawer.Screen name='HomeStacks' component={HomeScreen} />
+            <Drawer.Screen name='FAQs' component={FAQs} />
+            <Drawer.Screen name='Settings' component={Settings} />
+        </Drawer.Navigator>
+    )
+}
 const ClientTABS = () => {
     const Tab = createBottomTabNavigator();
     return (

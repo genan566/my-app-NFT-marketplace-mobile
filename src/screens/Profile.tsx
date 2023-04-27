@@ -440,10 +440,33 @@ const Profile = ({ navigation }) => {
                     }
                 </View>
 
+                <View style={{ paddingHorizontal: 20 }}>
+                    <View style={{ display: "flex", marginTop: 65, marginBottom: 30 }}>
+                        <Text style={{ color: "white", fontSize: 24, marginBottom: 5, fontFamily: "Montserrat-Medium", }}>My Personnal Products</Text>
+                        <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: "Montserrat-Medium", }}>Your Products</Text>
+                    </View>
+
+
+
+                    <TouchableOpacity
+                        // onPress={() => submitForLogin()}
+                        // disabled={loading}
+                        style={{
+                            backgroundColor: "rgb(99, 102, 241)", display: "flex",alignSelf:"flex-start",
+                            justifyContent: "center", alignItems: "center", padding: 12.5,paddingVertical:8, borderRadius: 5, flexDirection: "row",
+                        }}>
+
+                        <Text style={{
+                            color: "white", fontSize: 18,
+                            fontFamily: "Montserrat-Medium",
+                        }}>Create One</Text>
+                    </TouchableOpacity>
+                </View>
+
 
 
                 <View style={{ paddingHorizontal: 20 }}>
-                    <View style={{ display: "flex", marginTop: 65,marginBottom:30 }}>
+                    <View style={{ display: "flex", marginTop: 65, marginBottom: 30 }}>
                         <Text style={{ color: "white", fontSize: 24, marginBottom: 5, fontFamily: "Montserrat-Medium", }}>Recents Orders</Text>
                         {/* <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: "Montserrat-Medium", }}>{dataUser.email || "Non défini"}</Text> */}
                     </View>
@@ -456,7 +479,7 @@ const Profile = ({ navigation }) => {
                                 <>
                                     <View style={{
                                         flexDirection: "row", justifyContent: "space-between", width: "100%",
-                                        marginBottom: 10, elevation: 25, padding: 10, paddingHorizontal:15,borderRadius: 20,backgroundColor:"rgba(10,10,10,.5)"
+                                        marginBottom: 10, elevation: 25, padding: 10, paddingHorizontal: 15, borderRadius: 20, backgroundColor: "rgba(10,10,10,.5)"
                                     }}>
                                         <Image
                                             source={retrieveNFT?.image ? { uri: retrieveNFT?.image } : require("../../assets/images/1.png")} style={{
@@ -464,7 +487,7 @@ const Profile = ({ navigation }) => {
                                             }}
                                         // source={retrieveNFT?.image ? { uri: retrieveNFT?.image } : require("../../assets/images/1.png")}
                                         />
-                                        <View style={{ flex: 1, marginLeft: 20,justifyContent:"center" }}>
+                                        <View style={{ flex: 1, marginLeft: 20, justifyContent: "center" }}>
                                             <Text style={{ color: "white", fontSize: 18, fontFamily: "Montserrat-Medium", }}>{retrieveNFT?.title}</Text>
                                             <Text style={{ color: "rgba(255,255,255,.7)", fontSize: 14, marginTop: 5, fontFamily: "Montserrat-Medium", }}>{item.price}ETH</Text>
                                         </View>
