@@ -14,6 +14,7 @@ import ViewHiddenOfNFt from '../components/CustomSwipeableContent'
 import { RootNftContext, RootUserContext } from '../contexts'
 import { NftTypesValues } from '../types/NFTTypes'
 import userDataHooks from '../hooks/userDataHooks'
+import TopBarCustom from '../components/TopBarCustom'
 
 const WIDTH = Dimensions.get("screen").width;
 const HEIGHT = Dimensions.get("screen").height;
@@ -22,7 +23,6 @@ const HEIGHT = Dimensions.get("screen").height;
 
 const HomeScreen = ({ navigation }) => {
     const { loaded } = useLoadingFonts()
-    const { dataUser } = userDataHooks()
     const swipeUpDownRef = useRef();
     const [isPanelActive, setIsPanelActive] = useState(false);
     const [searchText, setSearchText] = React.useState("")
@@ -73,42 +73,7 @@ const HomeScreen = ({ navigation }) => {
                 style={{ backgroundColor: 'rgba(82, 82, 79,.8)', zIndex: 100 }} // style for swipe
             />
 
-            <View style={{ justifyContent: "space-between", flexDirection: "row", alignItems: "center", paddingHorizontal: 20, marginTop: 15 }}>
-
-                <TouchableOpacity
-                    // onPress={openPanel}
-                    onPress={() => {
-                    }}
-                    style={{ overflow: "hidden", backgroundColor: "rgba(82, 82, 79,.8)", borderRadius: 100 }}>
-                    <BlurView intensity={30} tint="dark" style={{
-                        paddingRight: 15, elevation: 10, display: "flex",
-                        justifyContent: 'space-between', flexDirection: "row", alignItems: "center", gap: 10
-                    }}>
-                        <View style={{ backgroundColor: "white", borderRadius: 50, padding: 10 }}>
-                            <Image
-                                style={{ width: 20, height: 20 }}
-                                source={require("../../assets/images/ethereum.png")} />
-                        </View>
-                        <Text style={{ color: "white", fontFamily: loaded && "Montserrat-SemiBold", fontSize: 16, maxWidth: 150 }}
-                            numberOfLines={1}>{`${dataUser.account_balance_eth || 0}ETH` || "0.00ETH"}</Text>
-                    </BlurView>
-                </TouchableOpacity>
-                <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate("Profile")}
-                        style={{ backgroundColor: "white", overflow: "hidden", borderRadius: 50, elevation: 20 }}>
-                        <Image
-                            style={{ width: 45, height: 45, borderWidth: 1, borderColor: "rgba(100,100,100,.1)", borderRadius: 100 }}
-                            resizeMode="cover"
-                            source={dataUser.image ? { uri: dataUser.image } : require("../../assets/images/1.png")} />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => navigation.openDrawer()}
-                        style={{ backgroundColor: "transparent", padding: 5, borderWidth: 1, borderColor: "white", overflow: "hidden", borderRadius: 50, }}>
-                        <MaterialCommunityIcons name="menu-swap-outline" size={24} color="white" />
-                    </TouchableOpacity>
-                </View>
-            </View>
+            <TopBarCustom navigation={navigation} />
 
             <View style={{ paddingHorizontal: 20, marginTop: 25 }}>
                 <Text style={{ color: "white", fontFamily: loaded && "Montserrat-Medium", fontSize: 25, }}>Discover the new </Text>
