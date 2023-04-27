@@ -30,6 +30,7 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
     const [activePage, setactivePage] = React.useState<number>(0)
     const [categories, setCategories] = React.useState<CategoriesTrending[]>([])
     const [userRetrieveDataListForSales, setuserRetrieveDataListForSales] = React.useState<UserRetrieveInterface[]>([])
+    const [userRetrieveData, setuserRetrieveData] = React.useState<UserRetrieveInterface>({} as UserRetrieveInterface)
 
     const load_sale_histories = async () => {
         let sales_getted = nftContext?.nftData?.id
@@ -97,6 +98,33 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
             }
         }
     }
+
+    const load_nft_owner = () => {
+        if (nftContext?.nftData?.owner_id) {
+            let respAuth = new AuthAPI()
+            if (userTokenContext.token !== "") {
+                let token = userTokenContext.token
+                respAuth
+                    .retrive_account(token, nftContext?.nftData?.owner_id)
+                    .then(res => {
+                        let formatedData = {
+                            email: res.email,
+                            name: res.name,
+                            pseudo: res.pseudo,
+                            is_superuser: res.is_superuser,
+                            is_staff: res.is_staff,
+                            image: routeAPIBaseImage + res.image.toString(),
+                        }
+                        setuserRetrieveData(formatedData)
+                    })
+            }
+        }
+    }
+
+
+    React.useEffect(() => {
+        load_nft_owner()
+    }, [nftContext?.nftData?.owner_id])
 
     React.useEffect(() => {
         load_categories()
@@ -234,10 +262,10 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                             </TouchableHighlight>
                             <View>
                                 <TouchableHighlight>
-                                    <Text style={{ color: "white", fontFamily: loaded && "Montserrat-SemiBold", fontSize: 20, marginTop: 2.5 }}>D'EVELs</Text>
+                                    <Text style={{ color: "white", fontFamily: loaded && "Montserrat-SemiBold", fontSize: 20, marginTop: 2.5 }}>{userRetrieveData?.name}</Text>
                                 </TouchableHighlight>
                                 <TouchableHighlight>
-                                    <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: loaded && "Montserrat-Medium", }}>Owner By Zizzler</Text>
+                                    <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: loaded && "Montserrat-Medium", }}>{userRetrieveData?.email}</Text>
                                 </TouchableHighlight>
                             </View>
                         </View>

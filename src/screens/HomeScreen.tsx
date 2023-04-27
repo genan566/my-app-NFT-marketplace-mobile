@@ -89,7 +89,7 @@ const HomeScreen = ({ navigation }) => {
                                 style={{ width: 20, height: 20 }}
                                 source={require("../../assets/images/ethereum.png")} />
                         </View>
-                        <Text style={{ color: "white", fontFamily: loaded && "Montserrat-SemiBold", fontSize: 16,maxWidth:150 }} numberOfLines={1}>{`${dataUser.account_balance_eth}ETH` || "0.00ETH"}</Text>
+                        <Text style={{ color: "white", fontFamily: loaded && "Montserrat-SemiBold", fontSize: 16, maxWidth: 150 }} numberOfLines={1}>{`${dataUser.account_balance_eth || 0}ETH` || "0.00ETH"}</Text>
                     </BlurView>
                 </TouchableOpacity>
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
@@ -107,10 +107,10 @@ const HomeScreen = ({ navigation }) => {
                 </View>
             </View>
 
-            <View style={{paddingHorizontal:20,marginTop:25}}>
-                    <Text style={{ color: "white", fontFamily: loaded && "Montserrat-Medium", fontSize: 25,  }}>Discover the new </Text>
-                    <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: loaded && "Montserrat-Medium", fontSize: 17,  }}>NFT collection</Text>
-                </View>
+            <View style={{ paddingHorizontal: 20, marginTop: 25 }}>
+                <Text style={{ color: "white", fontFamily: loaded && "Montserrat-Medium", fontSize: 25, }}>Discover the new </Text>
+                <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: loaded && "Montserrat-Medium", fontSize: 17, }}>NFT collection</Text>
+            </View>
             <View style={{ paddingHorizontal: 20, paddingBottom: 20 }}>
 
                 <View style={{

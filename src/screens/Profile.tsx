@@ -18,6 +18,12 @@ import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { RootUserContext, RootUserTokenContext, ValuesTypes } from '../contexts';
 import { writeItemToStorage } from '../../utilities/SettingToLocalsStorage';
 import userDataHooks from '../hooks/userDataHooks';
+import { SaleHistoriesAPI } from '../APIs/SaleHistoriesAPI';
+import { UserRetrieveInterface } from '../types/UserRetrieveTypes';
+import { NftTypesValues } from '../types/NFTTypes';
+import { SaleHistory } from '../types/SaleHistoryType';
+import { routeAPIBaseImage } from '../APIs/APIRoutes';
+import { NftsAPI } from '../APIs/NftsAPI';
 
 const zoomFromPrincipale = {
     0: {
@@ -52,9 +58,14 @@ const Profile = ({ navigation }) => {
     const { dataUser } = userDataHooks()
     const { removeItem } = useAsyncStorage('@storage_APIKEY');
 
+    const [userRetrieveDataListForSales, setuserRetrieveDataListForSales] = React.useState<UserRetrieveInterface[]>([])
+    const [saleHistories, setSaleHistories] = React.useState<SaleHistory[]>([])
+    const [sale_Set_NFT, setSale_Set_NFT] = React.useState<NftTypesValues[]>([])
+
 
     const loGout = async () => {
         userTokenContext.setToken("")
+        setSaleHistories([])
         await removeItem();
     }
 
@@ -86,6 +97,54 @@ const Profile = ({ navigation }) => {
         }
 
     }
+
+
+    React.useEffect(() => {
+
+        let order_mee = new SaleHistoriesAPI()
+        let token = userTokenContext.token
+        Boolean(token) && order_mee
+            .get_all_sales_by_mee(token)
+            .then(data => {
+                if (Boolean(data)) {
+                    setSaleHistories([...data])
+                    data.map((item: any) => {
+                        let respAuth = new AuthAPI()
+                        if (userTokenContext.token !== "") {
+                            let token = userTokenContext.token
+                            respAuth
+                                .retrive_account(token, item.user_suscribed)
+                                .then(res => {
+                                    let formatedData = {
+                                        email: res.email,
+                                        id: res.id,
+                                        name: res.name,
+                                        pseudo: res.pseudo,
+                                        is_superuser: res.is_superuser,
+                                        is_staff: res.is_staff,
+                                        image: routeAPIBaseImage + res.image.toString(),
+                                    }
+
+                                    setuserRetrieveDataListForSales([...userRetrieveDataListForSales, formatedData])
+
+                                })
+                        }
+                    })
+                }
+            })
+
+    }, [userTokenContext.token])
+
+    React.useEffect(() => {
+        if (Boolean(saleHistories.length)) {
+            const list_id_nfts = Array.from(new Set(saleHistories.map(it => it.nfts_id)))
+            console.log(list_id_nfts)
+            let nftApi = new NftsAPI()
+            nftApi.get_multi_NFT_by_ID(list_id_nfts).then((data) => {
+                setSale_Set_NFT(data.results)
+            })
+        }
+    }, [saleHistories])
 
 
 
@@ -292,7 +351,7 @@ const Profile = ({ navigation }) => {
                         style={{
                             width: 20,
                             height: 20,
-                            tintColor: "white",
+                            tintColor: "rgb(99, 102, 241)",
                             alignSelf: 'center',
                         }} />
                 </TouchableOpacity>
@@ -378,6 +437,48 @@ const Profile = ({ navigation }) => {
                                 <Icon name="log-in-outline"
                                     style={{ width: 20, height: 20, tintColor: "white", fontWeight: "bold", marginLeft: 10 }} />
                             </TouchableOpacity>
+                    }
+                </View>
+
+
+
+                <View style={{ paddingHorizontal: 20 }}>
+                    <View style={{ display: "flex", marginTop: 65,marginBottom:30 }}>
+                        <Text style={{ color: "white", fontSize: 24, marginBottom: 5, fontFamily: "Montserrat-Medium", }}>Recents Orders</Text>
+                        {/* <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: "Montserrat-Medium", }}>{dataUser.email || "Non défini"}</Text> */}
+                    </View>
+
+
+                    {
+                        saleHistories.map((item) => {
+                            let retrieveNFT = sale_Set_NFT.find((it) => item.nfts_id === it.id);
+                            return (
+                                <>
+                                    <View style={{
+                                        flexDirection: "row", justifyContent: "space-between", width: "100%",
+                                        marginBottom: 10, elevation: 25, padding: 10, paddingHorizontal:15,borderRadius: 20,backgroundColor:"rgba(10,10,10,.5)"
+                                    }}>
+                                        <Image
+                                            source={retrieveNFT?.image ? { uri: retrieveNFT?.image } : require("../../assets/images/1.png")} style={{
+                                                width: 60, height: 60, borderRadius: 100,
+                                            }}
+                                        // source={retrieveNFT?.image ? { uri: retrieveNFT?.image } : require("../../assets/images/1.png")}
+                                        />
+                                        <View style={{ flex: 1, marginLeft: 20,justifyContent:"center" }}>
+                                            <Text style={{ color: "white", fontSize: 18, fontFamily: "Montserrat-Medium", }}>{retrieveNFT?.title}</Text>
+                                            <Text style={{ color: "rgba(255,255,255,.7)", fontSize: 14, marginTop: 5, fontFamily: "Montserrat-Medium", }}>{item.price}ETH</Text>
+                                        </View>
+
+                                    </View>
+                                </>)
+                        })
+                    }
+
+                    {
+                        saleHistories.length < 1 && <>
+                            {/* <Text style={{ color: "white", fontSize: 18, marginBottom: 5, fontFamily: "Montserrat-Medium", }}>Recent Activity</Text> */}
+                            <Text style={{ color: "rgba(255,255,255,.5)", fontSize: 15, textAlign: "center", marginTop: 15, fontFamily: "Montserrat-Medium", }}>Nothing to show now</Text>
+                        </>
                     }
                 </View>
 
