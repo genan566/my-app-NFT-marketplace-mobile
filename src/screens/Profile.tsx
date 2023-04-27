@@ -479,7 +479,7 @@ const Profile = ({ navigation }) => {
                                 <>
                                     <View style={{
                                         flexDirection: "row", justifyContent: "space-between", width: "100%",
-                                        marginBottom: 10, elevation: 25, padding: 10, paddingHorizontal: 15, borderRadius: 20, backgroundColor: "rgba(10,10,10,.5)"
+                                        marginBottom: 10, elevation: 25, padding: 10, paddingHorizontal: 15, borderRadius: 10, backgroundColor: "rgba(10,10,10,.5)"
                                     }}>
                                         <Image
                                             source={retrieveNFT?.image ? { uri: retrieveNFT?.image } : require("../../assets/images/1.png")} style={{
@@ -488,8 +488,8 @@ const Profile = ({ navigation }) => {
                                         // source={retrieveNFT?.image ? { uri: retrieveNFT?.image } : require("../../assets/images/1.png")}
                                         />
                                         <View style={{ flex: 1, marginLeft: 20, justifyContent: "center" }}>
-                                            <Text style={{ color: "white", fontSize: 18, fontFamily: "Montserrat-Medium", }}>{retrieveNFT?.title}</Text>
-                                            <Text style={{ color: "rgba(255,255,255,.7)", fontSize: 14, marginTop: 5, fontFamily: "Montserrat-Medium", }}>{item.price}ETH</Text>
+                                            <Text style={{ color: "white", fontSize: 16, fontFamily: "Montserrat-Medium", }}>{retrieveNFT?.title}</Text>
+                                            <Text style={{ color: "rgba(255,255,255,.7)", fontSize: 12, marginTop: 5, fontFamily: "Montserrat-Medium", }}>{item.price}ETH</Text>
                                         </View>
 
                                     </View>
