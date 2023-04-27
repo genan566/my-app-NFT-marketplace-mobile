@@ -254,10 +254,10 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                                 <Image
                                     style={{ height: 50, width: 50 }}
                                     source={require("../../assets/images/1.png")}
-                                    placeholder={blurhash}
+                                    // placeholder={blurhash}
                                     // contentFit="cover"
                                     resizeMode='center'
-                                    transition={1000}
+                                    // transition={1000}
                                 />
                             </TouchableHighlight>
                             <View>
