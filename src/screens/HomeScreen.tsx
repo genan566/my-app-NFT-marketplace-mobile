@@ -108,50 +108,59 @@ const HomeScreen = ({ navigation }) => {
                 </View>
             </View>
 
+
+            <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{ paddingHorizontal: 20, gap: 10 }}
+                style={{ gap: 10, height: 55, marginBottom: 15 }}>
+                <TouchableOpacity
+                    onPress={() => {
+                        setActiveCategoriesTrending(0);
+                    }}
+                    style={{ paddingHorizontal: 10, backgroundColor: activeCategoriesTrending === 0 ? "rgb(99, 102, 241)" : null, borderColor: activeCategoriesTrending === 0 ? null : "white", borderWidth: 1, paddingVertical: 10, borderRadius: 50 }}>
+                    <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white" }}>Default</Text>
+                </TouchableOpacity>
+
+                {loadingDataCategories &&
+                    <View style={{ alignItems: "center", gap: 10, width: WIDTH * .8, flexDirection: "row", }}>
+                        <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white", textAlign: "center", }} >Chargement des catégories</Text>
+                        <ActivityIndicator size="small" color="rgb(99, 102, 241)" />
+                    </View>
+                }
+
+                {
+                    categoriesTrending?.map((category) => {
+                        return <TouchableOpacity
+                            onPress={() => {
+                                setActiveCategoriesTrending(category.id);
+                            }}
+                            key={category?.id}
+                            style={{
+                                paddingHorizontal: 10, backgroundColor: category.id === activeCategoriesTrending ? "rgb(99, 102, 241)" : null,
+                                borderColor: category.id === activeCategoriesTrending ? null : "white", borderWidth: 1, paddingVertical: 10, borderRadius: 50
+                            }}>
+                            <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white" }}>{category?.name}</Text>
+                        </TouchableOpacity>
+                    })
+                }
+            </ScrollView>
+
             <ScrollView
                 // showsVerticalScrollIndicator={false}
-                contentContainerStyle={{}}
+                // contentContainerStyle={{flex:1}}
                 showsVerticalScrollIndicator={false}
                 style={{ height: HEIGHT * .9 }}>
 
-                <ScrollView
-                    horizontal
-                    style={{}}
-                    contentContainerStyle={{ height: 50, width: "100%", alignItems: "center", gap: 10, paddingHorizontal: 20, paddingRight: 200 }}
+                {/* <ScrollView
+                    // horizontal
+                    style={{ width: WIDTH, flex: 1 }}
+                    contentContainerStyle={{ height: 50, width: "100%", alignItems: "center", gap: 10, paddingHorizontal: 20, maxWidth: WIDTH * .8 }}
                 // showsHorizontalScrollIndicator={false}
-                >
-                    <TouchableOpacity
-                        onPress={() => {
-                            setActiveCategoriesTrending(0);
-                        }}
-                        style={{ paddingHorizontal: 10, backgroundColor: activeCategoriesTrending === 0 ? "rgb(99, 102, 241)" : null, borderColor: activeCategoriesTrending === 0 ? null : "white", borderWidth: 1, paddingVertical: 10, borderRadius: 50 }}>
-                        <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white" }}>Default</Text>
-                    </TouchableOpacity>
+                > */}
 
-                    {loadingDataCategories &&
-                        <View style={{ alignItems: "center", gap: 10, width: WIDTH * .8, flexDirection: "row", }}>
-                            <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white", textAlign: "center", }} >Chargement des catégories</Text>
-                            <ActivityIndicator size="small" color="rgb(99, 102, 241)" />
-                        </View>
-                    }
 
-                    {
-                        categoriesTrending?.map((category) => {
-                            return <TouchableOpacity
-                                onPress={() => {
-                                    setActiveCategoriesTrending(category.id);
-                                }}
-                                key={category?.id}
-                                style={{
-                                    paddingHorizontal: 10, backgroundColor: category.id === activeCategoriesTrending ? "rgb(99, 102, 241)" : null,
-                                    borderColor: category.id === activeCategoriesTrending ? null : "white", borderWidth: 1, paddingVertical: 10, borderRadius: 50
-                                }}>
-                                <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white" }}>{category?.name}</Text>
-                            </TouchableOpacity>
-                        })
-                    }
-
-                </ScrollView>
+                {/* </ScrollView> */}
                 {
                     !(Object.keys(data).length === 0) &&
                     <View style={{ flexDirection: "row", marginVertical: 15, alignItems: "center", justifyContent: "center", gap: 10 }}>
