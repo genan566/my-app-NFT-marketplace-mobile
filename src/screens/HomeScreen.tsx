@@ -89,15 +89,16 @@ const HomeScreen = ({ navigation }) => {
                                 style={{ width: 20, height: 20 }}
                                 source={require("../../assets/images/ethereum.png")} />
                         </View>
-                        <Text style={{ color: "white", fontFamily: loaded && "Montserrat-SemiBold", fontSize: 16, maxWidth: 150 }} numberOfLines={1}>{`${dataUser.account_balance_eth || 0}ETH` || "0.00ETH"}</Text>
+                        <Text style={{ color: "white", fontFamily: loaded && "Montserrat-SemiBold", fontSize: 16, maxWidth: 150 }} 
+                        numberOfLines={1}>{`${dataUser.account_balance_eth || 0}ETH` || "0.00ETH"}</Text>
                     </BlurView>
                 </TouchableOpacity>
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
                     <TouchableOpacity
                         onPress={() => navigation.navigate("Profile")}
-                        style={{ backgroundColor: "white", overflow: "hidden", borderRadius: 50, }}>
+                        style={{ backgroundColor: "white", overflow: "hidden", borderRadius: 50,elevation:20 }}>
                         <Image
-                            style={{ width: 45, height: 45 }}
+                            style={{ width: 45, height: 45,borderWidth:1,borderColor:"rgba(100,100,100,.1)",borderRadius:100 }}
                             resizeMode="cover"
                             source={dataUser.image ? { uri: dataUser.image } : require("../../assets/images/1.png")} />
                     </TouchableOpacity>
