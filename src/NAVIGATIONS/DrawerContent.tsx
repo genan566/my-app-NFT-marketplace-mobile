@@ -26,6 +26,8 @@ import RootComponent from '../components/RootComponent';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 import userDataHooks from '../hooks/userDataHooks';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import { RootUserTokenContext } from '../contexts';
 // import { AuthContext } from '../contexts/context';
 // import { getFromLocalStorage } from '../Reducer/LoginReducer';
 
@@ -33,23 +35,12 @@ import userDataHooks from '../hooks/userDataHooks';
 const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
 
 const DrawerContent = (props) => {
+    const userTokenContext = React.useContext(RootUserTokenContext)
 
 
     const { dataUser } = userDataHooks()
-    // const [userData, setuserData] = React.useState({})
 
-    // const loadUser = async () => {
-    //     let userToken = JSON.parse(await getFromLocalStorage());
-    //     if (userToken) {
-    //         setuserData(userToken)
-    //     }
-    // }
-
-    // React.useEffect(() => {
-    //     loadUser()
-    // }, [])
-
-    // const { signOut } = React.useContext(AuthContext)
+    const { removeItem } = useAsyncStorage('@storage_APIKEY');
 
     return (
 
@@ -166,6 +157,24 @@ const DrawerContent = (props) => {
                             />
 
                         </Drawer.Section>
+                        {/* <Drawer.Section> */}
+                        <DrawerItem style={{ marginTop: 35 }}
+                            icon={({ }) => (
+                                <Icon name="log-out-outline"
+                                    style={{ width: 20, height: 20, tintColor: "#e53e3e", fontWeight: "bold" }} />
+                            )}
+
+                            label={`Déconnexion`}
+                            labelStyle={{
+                                color: "#e53e3e",
+                                fontFamily: "Montserrat-Medium"
+                            }}
+                            onPress={async () => {
+                                userTokenContext.setToken("")
+                                await removeItem();
+                            }}
+                        />
+                        {/* </Drawer.Section> */}
                     </DrawerContentScrollView>
                 </View>
             </BlurView>
