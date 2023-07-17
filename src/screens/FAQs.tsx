@@ -53,7 +53,7 @@ const FAQs = ({ navigation }) => {
 
     const _renderHeader = (section: FAQs) => {
         return (
-            <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 20, paddingVertical:0}}>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 20, paddingVertical: 0 }}>
                 <Text style={{ color: "white", fontFamily: loaded && "Montserrat-SemiBold", fontSize: 16, width: "95%" }}>{section.title}</Text>
                 <Icon name="arrow-ios-downward" style={{
                     width: 15,
@@ -67,7 +67,7 @@ const FAQs = ({ navigation }) => {
 
     const _renderContent = (section: FAQs) => {
         return (
-            <View style={{ marginTop: 0, borderTopColor: "rgba(255,255,255,.8)", borderTopWidth: .2, paddingVertical: 15,paddingHorizontal:5 }}>
+            <View style={{ marginTop: 0, borderTopColor: "rgba(255,255,255,.8)", borderTopWidth: .2, paddingVertical: 15, paddingHorizontal: 5 }}>
                 <Text style={{ color: "rgba(255,255,255,.8)", fontFamily: loaded && "Montserrat-Medium", fontSize: 13, lineHeight: 25 }}>{section.description}</Text>
             </View>
         )
@@ -86,26 +86,28 @@ const FAQs = ({ navigation }) => {
 
             <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 20 }} style={{ marginTop: 20 }}>
 
-                <Accordion
-                    sections={dataFAQS}
-                    activeSections={activeSections}
-                    // renderSectionTitle={this._renderSectionTitle}
-                    // renderSectionTitle={_renderSectionTitle}
-                    renderHeader={_renderHeader}
-                    renderContent={_renderContent}
-                    underlayColor="transparent"
-                    onChange={_updateSections}
-                />
+                {
+                    dataFAQS.length > 0 && <Accordion
+                        sections={dataFAQS}
+                        activeSections={activeSections}
+                        // renderSectionTitle={this._renderSectionTitle}
+                        // renderSectionTitle={_renderSectionTitle}
+                        renderHeader={_renderHeader}
+                        renderContent={_renderContent}
+                        underlayColor="transparent"
+                        onChange={_updateSections}
+                    />
+                }
                 {
                     dataFAQS.length === 0 &&
                     <Text style={{ color: "rgba(255,255,255,.5)", fontSize: 15, textAlign: "center", marginTop: 15, fontFamily: "Montserrat-Medium", marginBottom: 20 }}>Nothing to show now</Text>
                 }
 
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     // onPress={() => submitForLogin()}
                     // disabled={loading}
                     style={{
-                        backgroundColor: "rgb(99, 102, 241)", display: "flex", alignSelf: "flex-start",marginTop:15,
+                        backgroundColor: "rgb(99, 102, 241)", display: "flex", alignSelf: "flex-start", marginTop: 15,
                         justifyContent: "center", alignItems: "center", padding: 12.5, paddingVertical: 8, borderRadius: 5, flexDirection: "row",
                     }}>
 
@@ -113,7 +115,7 @@ const FAQs = ({ navigation }) => {
                         color: "white", fontSize: 15,
                         fontFamily: "Montserrat-Medium",
                     }}>Ajouter une note à la FAQ</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </ScrollView>
         </RootComponent>
     )

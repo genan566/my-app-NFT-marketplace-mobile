@@ -1,5 +1,5 @@
-import { View, Text, ScrollView, Dimensions, TouchableOpacity, ActivityIndicator } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, ScrollView, Dimensions, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native'
+import React, { useRef, useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
 import RootComponent from '../components/RootComponent';
 
@@ -15,7 +15,7 @@ import { blurhash } from '../../utilities/Hasher';
 import { isEmail } from '../../utilities/ISMail';
 import { AuthAPI } from '../APIs/AuthApi';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
-import { RootUserContext, RootUserTokenContext, ValuesTypes } from '../contexts';
+import { RootNftContext, RootUserContext, RootUserTokenContext, ValuesTypes } from '../contexts';
 import { writeItemToStorage } from '../../utilities/SettingToLocalsStorage';
 import userDataHooks from '../hooks/userDataHooks';
 import { SaleHistoriesAPI } from '../APIs/SaleHistoriesAPI';
@@ -24,6 +24,10 @@ import { NftTypesValues } from '../types/NFTTypes';
 import { SaleHistory } from '../types/SaleHistoryType';
 import { routeAPIBaseImage } from '../APIs/APIRoutes';
 import { NftsAPI } from '../APIs/NftsAPI';
+import { PaginatedDataNFT } from '../types/PaginatedData';
+import NFTViewer from '../components/NFTViewer';
+import SwipeUpDown from 'react-native-swipe-up-down';
+import ViewHiddenOfNFt from '../components/CustomSwipeableContent';
 
 const zoomFromPrincipale = {
     0: {
@@ -52,15 +56,33 @@ const Profile = ({ navigation }) => {
     const [showModalsLogin, setshowModalsLogin] = React.useState<boolean>(false)
     const [loading, setloading] = React.useState<boolean>(false)
     const [mail, setMail] = useState<string>("")
+    const userContext = React.useContext(RootUserContext)
     const [errorOnLogin, setErrorOnLogin] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const userTokenContext = React.useContext(RootUserTokenContext)
     const { dataUser } = userDataHooks()
+    const [nftsData, setnftsData] = React.useState<PaginatedDataNFT>({} as PaginatedDataNFT)
     const { removeItem } = useAsyncStorage('@storage_APIKEY');
+    const nFTContext = React.useContext(RootNftContext)
+    const swipeUpDownRef = useRef();
 
     const [userRetrieveDataListForSales, setuserRetrieveDataListForSales] = React.useState<UserRetrieveInterface[]>([])
     const [saleHistories, setSaleHistories] = React.useState<SaleHistory[]>([])
     const [sale_Set_NFT, setSale_Set_NFT] = React.useState<NftTypesValues[]>([])
+
+    const check_user_can_create = React.useCallback(() => {
+        let resNFTs = new NftsAPI()
+        let parsedToken = userTokenContext.token
+        resNFTs.get_all_nfts_by_user(parsedToken).then(data => { setnftsData(data) })
+    }, [userContext?.user])
+
+    React.useEffect(() => {
+        check_user_can_create()
+    }, [check_user_can_create])
+
+    React.useEffect(() => {
+        console.log("nfts", nftsData)
+    }, [])
 
 
     const loGout = async () => {
@@ -152,6 +174,22 @@ const Profile = ({ navigation }) => {
 
         <RootComponent>
 
+
+            <SwipeUpDown
+                itemFull={(hide: any) => <ViewHiddenOfNFt
+                    callAction={() => swipeUpDownRef.current.showMini()}
+                    hide={hide} />}
+                ref={swipeUpDownRef}
+                onShowMini={() => console.log('mini')}
+                onShowFull={() => console.log('full')}
+                animation="spring"
+                // disableSwipeIcon
+                // extraMarginTop={100}
+                swipeHeight={HEIGHT * .92}
+                iconColor='gray'
+                iconSize={30}
+                style={{ backgroundColor: 'rgba(82, 82, 79,.8)', zIndex: 100 }} // style for swipe
+            />
             {
                 !(userTokenContext.token) && showModalsLogin && <Animatable.View
 
@@ -332,7 +370,7 @@ const Profile = ({ navigation }) => {
                             alignSelf: 'center',
                         }} />
                 </TouchableOpacity>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     activeOpacity={.8}
                     style={{
                         borderRadius: 50,
@@ -354,7 +392,7 @@ const Profile = ({ navigation }) => {
                             tintColor: "rgb(99, 102, 241)",
                             alignSelf: 'center',
                         }} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
 
             <ScrollView>
@@ -448,19 +486,49 @@ const Profile = ({ navigation }) => {
 
 
 
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                         // onPress={() => submitForLogin()}
                         // disabled={loading}
                         style={{
-                            backgroundColor: "rgb(99, 102, 241)", display: "flex",alignSelf:"flex-start",
-                            justifyContent: "center", alignItems: "center", padding: 12.5,paddingVertical:8, borderRadius: 5, flexDirection: "row",
+                            backgroundColor: "rgb(99, 102, 241)", display: "flex", alignSelf: "flex-start",
+                            justifyContent: "center", alignItems: "center", padding: 12.5, paddingVertical: 8, borderRadius: 5, flexDirection: "row",
                         }}>
 
                         <Text style={{
                             color: "white", fontSize: 18,
                             fontFamily: "Montserrat-Medium",
                         }}>Create One</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
+                </View>
+
+
+                <View style={{ marginTop: 15, paddingHorizontal: 20 }}>
+                    {
+                        Boolean(nftsData.results) && <FlatList
+                            // horizontal
+                            data={nftsData.results}
+                            style={{ height: 400, width: "100%" }}
+                            // style={{ backgroundColor: "red" }}
+                            renderItem={({ item }) => {
+                                return (
+                                    <NFTViewer callActionView={() => {
+                                        let sendedData: NftTypesValues = {
+                                            id: item.id,
+                                            title: item.title,
+                                            description: item.description,
+                                            owner_id: item.owner,
+                                            image: item.image,
+                                            price: item.price,
+                                            categories_trending: item.categories_trending,
+                                            sales_history: item.sales_history,
+                                        }
+                                        sendedData && nFTContext?.setNftData(sendedData)
+                                        swipeUpDownRef.current.showFull()
+                                    }} data={item} key={item.id} />
+                                )
+                            }}
+                        />
+                    }
                 </View>
 
 
