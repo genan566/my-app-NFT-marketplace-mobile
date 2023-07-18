@@ -158,22 +158,36 @@ const DrawerContent = (props) => {
 
                 </Drawer.Section>
                 {/* <Drawer.Section> */}
-                <DrawerItem style={{ marginTop: 35 }}
-                    icon={({ }) => (
-                        <Icon name="log-out-outline"
-                            style={{ width: 20, height: 20, tintColor: "#e53e3e", fontWeight: "bold" }} />
-                    )}
+                {
+                    dataUser.id ? <DrawerItem style={{ marginTop: 35 }}
+                        icon={({ }) => (
+                            <Icon name="log-out-outline"
+                                style={{ width: 20, height: 20, tintColor: "#e53e3e", fontWeight: "bold" }} />
+                        )}
 
-                    label={`Déconnexion`}
-                    labelStyle={{
-                        color: "#e53e3e",
-                        fontFamily: "Montserrat-Bold"
-                    }}
-                    onPress={async () => {
-                        userTokenContext.setToken("")
-                        await removeItem();
-                    }}
-                />
+                        label={`Déconnexion`}
+                        labelStyle={{
+                            color: "#e53e3e",
+                            fontFamily: "Montserrat-Bold"
+                        }}
+                        onPress={async () => {
+                            userTokenContext.setToken("")
+                            await removeItem();
+                        }}
+                    /> : <DrawerItem style={{ marginTop: 35 }}
+                        icon={({ }) => (
+                            <Icon name="log-in-outline"
+                                style={{ width: 20, height: 20, tintColor: "#3d7ae0", fontWeight: "bold" }} />
+                        )}
+
+                        label={`Login`}
+                        labelStyle={{
+                            color: "#3d7ae0",
+                            fontFamily: "Montserrat-Bold"
+                        }}
+                        onPress={() => { props.navigation.navigate("Profile") }}
+                    />
+                }
                 {/* </Drawer.Section> */}
             </DrawerContentScrollView>
         </View>

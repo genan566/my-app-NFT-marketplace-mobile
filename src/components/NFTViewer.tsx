@@ -168,7 +168,7 @@ const NFTViewer = ({ data, callActionView }: { data: any, callActionView: () => 
                         <View style={{ borderWidth: 1, borderColor: "rgba(255,255,255,.2)", borderRadius: 100, overflow: "hidden" }}>
                             <Image
                                 style={{ width: 45, height: 45, borderRadius: 100 }}
-                                resizeMode="cover"
+                                contentFit="cover"
                                 source={require("../../assets/images/1.png")} />
                         </View>
                     </View>

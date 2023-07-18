@@ -28,28 +28,7 @@ import { PaginatedDataNFT } from '../types/PaginatedData';
 import NFTViewer from '../components/NFTViewer';
 import SwipeUpDown from 'react-native-swipe-up-down';
 import ViewHiddenOfNFt from '../components/CustomSwipeableContent';
-
-const zoomFromPrincipale = {
-    0: {
-        opacity: 0,
-    },
-    1: {
-        opacity: 1,
-    }
-
-}
-
-const zoomFromSecondary = {
-    0: {
-        scale: .8,
-        translateY: -30,
-    },
-    1: {
-        scale: 1,
-        translateY: 0,
-    }
-
-}
+import { zoomFromPrincipale, zoomFromSecondary } from '../../utilities/AnimationConstants';
 
 
 const Profile = ({ navigation }) => {
@@ -313,21 +292,6 @@ const Profile = ({ navigation }) => {
                                         }
                                     </TouchableOpacity>
                                 </View>
-
-                                <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 20 }}>
-                                    <Text style={{
-                                        color: "rgba(255,255,255,.5)", fontFamily: "Montserrat-SemiBold",
-                                        fontSize: 12, alignSelf: "center",
-                                    }}>You have not an account yet /
-                                    </Text>
-
-                                    <TouchableOpacity>
-                                        <Text style={{
-                                            color: "rgba(255,255,255,.9)", fontFamily: "Montserrat-SemiBold",
-                                            fontSize: 12, alignSelf: "center", marginLeft: 5
-                                        }}>Sign Up</Text>
-                                    </TouchableOpacity>
-                                </View>
                             </Animatable.View>
 
                             <View style={{ height: HEIGHT * .3 }} />
@@ -426,7 +390,11 @@ const Profile = ({ navigation }) => {
 
                 <View style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: 55 }}>
                     <Text style={{ color: "white", fontSize: 24, marginBottom: 5, fontFamily: "Montserrat-Medium", }}>{dataUser.name || "Non défini"}</Text>
-                    <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: "Montserrat-Medium", }}>{dataUser.email || "Non défini"}</Text>
+                    <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: "Montserrat-Medium", marginBottom: 5 }}>{dataUser.email || "Non défini"}</Text>
+
+                    <View>
+                        <Text style={{ color: "rgba(255,255,255,.5)", fontFamily: "Montserrat-Medium", fontSize: 12 }}>{dataUser?.pseudo}</Text>
+                    </View>
                 </View>
 
                 <View style={{ paddingHorizontal: 25, marginTop: 15 }}>

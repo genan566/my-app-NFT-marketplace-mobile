@@ -210,7 +210,7 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                             source={nftContext.nftData.image ? { uri: nftContext.nftData.image } : require("../../assets/images/1.png")}
                             placeholder={blurhash}
                             // contentFit="cover"
-                            resizeMode='cover'
+                            contentFit='cover'
                             transition={1000}
                         />
 
@@ -256,8 +256,8 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                                     source={require("../../assets/images/1.png")}
                                     // placeholder={blurhash}
                                     // contentFit="cover"
-                                    resizeMode='center'
-                                    // transition={1000}
+                                    contentFit='center'
+                                // transition={1000}
                                 />
                             </TouchableHighlight>
                             <View>
@@ -269,7 +269,7 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                                 </TouchableHighlight>
                             </View>
                         </View>
-                        <TouchableOpacity style={{ backgroundColor: "rgb(50,50,50)", borderRadius: 100, padding: 10 }}
+                        {/* <TouchableOpacity style={{ backgroundColor: "rgb(50,50,50)", borderRadius: 100, padding: 10 }}
                         >
                             <Icon name="heart"
                                 style={{
@@ -278,7 +278,7 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                                     tintColor: "red",
                                     alignSelf: 'center',
                                 }} />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </View>
 
                     <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 20, gap: 10 }}>
@@ -323,32 +323,21 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                         <Tab.Screen name="Settings" component={SettingsScreen} />
                     </Tab.Navigator> */}
                     <View style={{ marginTop: 35 }}>
-                        <TouchableOpacity
-                            // onPress={async () => {
-                            //     setLoading(true);
-                            //     dispatch(cleanStore())
-                            //     await signOut()
-                            // }}
+                        {/* <TouchableOpacity
                             style={{
                                 backgroundColor: "white", display: "flex",
                                 justifyContent: "center", alignItems: "center", padding: 12.5, borderRadius: 5, flexDirection: "row",
                             }}>
-
-                            {/* {
-                            loading ? <ActivityIndicator size="large" color="white" />
-                                : <Text style={{
-                                    color: "white", fontSize: 16,
-                                    fontFamily: "Montserrat-Medium",
-                                }}>Déconnexion</Text>
-                        } */}
-
                             <Text style={{
                                 color: "black", fontSize: 18,
                                 fontFamily: "Montserrat-Medium",
-                            }}>Place a Bid</Text>
-                            {/* <Icon name="log-in-outline"
-                                style={{ width: 20, height: 20, tintColor: "black", fontWeight: "bold", marginLeft: 10 }} /> */}
-                        </TouchableOpacity>
+                            }}>Place a Bid</Text>                            
+                        </TouchableOpacity> */}
+
+                        <View style={{ width: "100%" }}>
+                            <Text style={{ color: "red", fontFamily: loaded && "Montserrat-Medium", textAlign: "center", lineHeight: 22 }}>Une mise à jour future permettra une souscription aux Produits NFT.</Text>
+
+                        </View>
                     </View>
 
                     <View style={{

@@ -32,6 +32,7 @@ const userDataHooks = () => {
     }, [userTokenContext.token])
     return {
         dataUser: userContext.user,
+        setter: userContext.setUser,
     }
 }
 
