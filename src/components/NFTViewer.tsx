@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native'
 import React from 'react'
 import { blurhash } from '../../utilities/Hasher'
 import { useDimensionSizes } from '../../utilities/DimensionHooks'
@@ -16,6 +16,11 @@ import { AuthAPI } from '../APIs/AuthApi'
 import { routeAPIBaseImage } from '../APIs/APIRoutes'
 import { CategoriesTrendingAPI } from '../APIs/CategoriesTrending'
 import { CategoriesTrending } from '../types/CategorieTrendingType'
+
+const WIDTH = Dimensions.get("screen").width;
+const HEIGHT = Dimensions.get("screen").height;
+
+
 const NFTViewer = ({ data, callActionView }: { data: any, callActionView: () => void }) => {
     const { height } = useDimensionSizes()
     const { loaded } = useLoadingFonts()
@@ -118,10 +123,10 @@ const NFTViewer = ({ data, callActionView }: { data: any, callActionView: () => 
 
     return (
         <View style={{
-            width: "100%",
-            minHeight: 315, maxHeight: 370, overflow: "hidden",
+            width: WIDTH * .9,
+            height: 370, overflow: "hidden",
             position: "relative",
-            borderRadius: 10, marginBottom: 15
+            borderRadius: 10, marginRight: 15, marginBottom: 15
         }}>
 
             <Image
@@ -172,7 +177,7 @@ const NFTViewer = ({ data, callActionView }: { data: any, callActionView: () => 
                                 source={require("../../assets/images/1.png")} />
                         </View>
                     </View>
-                    <View style={{ paddingHorizontal: 10 ,width: "100%",}}>
+                    <View style={{ paddingHorizontal: 10, width: "100%", }}>
                         <View style={{ width: "100%", }}>
                             <Text style={{ fontFamily: loaded && "Montserrat-Medium", fontSize: 28, color: "white", width: "90%" }} numberOfLines={1} >{data.title}</Text>
                             <Text style={{ fontFamily: loaded && "Montserrat-Medium", fontSize: 22, color: "white", width: "90%" }} numberOfLines={1} >{data.description}</Text>
@@ -195,7 +200,7 @@ const NFTViewer = ({ data, callActionView }: { data: any, callActionView: () => 
                     </View>
                     <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
 
-                        <View style={{ overflow: "hidden",  borderRadius: 100 }}>
+                        <View style={{ overflow: "hidden", borderRadius: 100 }}>
                             <BlurView intensity={30} tint="light" style={{
                                 padding: 4, paddingHorizontal: 20, elevation: 10, display: "flex",
                                 justifyContent: 'space-between', flexDirection: "row", alignItems: "center"

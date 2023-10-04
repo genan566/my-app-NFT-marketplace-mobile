@@ -44,8 +44,6 @@ const DrawerContent = (props) => {
 
     return (
 
-
-
         // <LinearGradient
         //     start={{ x: 0.1, y: 0.2 }}
         //     end={{ x: 0.9, y: 0.8 }}
@@ -56,10 +54,10 @@ const DrawerContent = (props) => {
         //         tint='dark'
         //         intensity={80} style={{ flex: 1, }}>
 
-        <View style={{ flex: 1, position: "relative", backgroundColor: "#1A202C" }}>
+        <View style={{ flex: 1, position: "relative", backgroundColor: "#08090d" }}>
             <DrawerContentScrollView {...props}>
                 <View style={{
-                    backgroundColor: "rgba(0,0,0,1)",
+                    backgroundColor: "black",
                     paddingHorizontal: 15,
                     padding: 35,
                     flexDirection: "row", alignItems: "center",
@@ -101,10 +99,10 @@ const DrawerContent = (props) => {
                             >
                                 {dataUser.name || "Non défini"}</Text>
                         </View>
-                        <View style={{ alignItems: "flex-start", }}>
+                        <View style={{ alignItems: "flex-start", marginTop:3}}>
                             <Text
                                 numberOfLines={1} style={{
-                                    fontSize: 12, color: "rgba(255,255,255,.5)",
+                                    fontSize: 15, color: "rgba(255,255,255,.5)",
                                     fontFamily: "Montserrat-Bold"
                                 }}> {dataUser.email || "Non défini"}</Text>
                         </View>

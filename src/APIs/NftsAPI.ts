@@ -108,6 +108,22 @@ export class NftsAPI {
 
     }
 
+    async get_all_nfts_by_user__next(token: string, url: string) {
+        return fetch(
+            url,
+            {
+                method: "GET",
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': "Token " + JSON.parse(token),
+                },
+            }
+        )
+            .then((js) => js.ok && js.json())
+
+    }
+
     async get_filtered_by_trendingIDs_nfts(id_category: number) {
         return fetch(
             api_url(`core_nfts/?categories=${id_category}`),
