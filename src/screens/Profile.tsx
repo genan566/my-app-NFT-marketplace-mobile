@@ -30,6 +30,7 @@ import SwipeUpDown from 'react-native-swipe-up-down';
 import ViewHiddenOfNFt from '../components/CustomSwipeableContent';
 import { zoomFromPrincipale, zoomFromSecondary } from '../../utilities/AnimationConstants';
 import { Entypo } from '@expo/vector-icons';
+import { UserTypesValues } from '../types/UserTypeValues';
 
 
 const Profile = ({ navigation }) => {
@@ -41,7 +42,7 @@ const Profile = ({ navigation }) => {
     const [password, setPassword] = useState<string>("")
     const userTokenContext = React.useContext(RootUserTokenContext)
     const { dataUser } = userDataHooks()
-    const [nftsData, setnftsData] = React.useState<PaginatedDataNFT>({} as PaginatedDataNFT)
+    const [nftsData, setnftsData] = React.useState<PaginatedDataNFT>({ count: 0, next: null, previous: null, results: [] })
     const { removeItem } = useAsyncStorage('@storage_APIKEY');
     const nFTContext = React.useContext(RootNftContext)
     const swipeUpDownRef = useRef();
@@ -81,6 +82,15 @@ const Profile = ({ navigation }) => {
         setSaleHistories([])
         await removeItem();
     }
+
+    React.useEffect(() => {
+        if (userTokenContext.token.length === 0) {
+            userContext.setUser({} as UserTypesValues)
+            setnftsData({} as PaginatedDataNFT)
+            setSaleHistories([])
+            setSale_Set_NFT([])
+        }
+    }, [userTokenContext])
 
     const submitForLogin = () => {
         setloading(true)
@@ -157,7 +167,6 @@ const Profile = ({ navigation }) => {
             })
         }
     }, [saleHistories])
-
 
     return (
 
@@ -481,54 +490,60 @@ const Profile = ({ navigation }) => {
 
 
                 <View style={{ marginTop: 5, }}>
-                    <ScrollView
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        contentContainerStyle={{ paddingHorizontal: 15 }}
-                        style={{ width: "100%", height: 370 }}>
-                        {
-                            Boolean(nftsData.results) && nftsData.results.map((item) => {
-                                return <NFTViewer callActionView={() => {
-                                    let sendedData: NftTypesValues = {
-                                        id: item.id,
-                                        title: item.title,
-                                        description: item.description,
-                                        owner_id: item.owner,
-                                        image: item.image,
-                                        price: item.price,
-                                        categories_trending: item.categories_trending,
-                                        sales_history: item.sales_history,
-                                    }
-                                    sendedData && nFTContext?.setNftData(sendedData)
-                                    swipeUpDownRef.current.showFull()
-                                }} data={item} key={item.id} />
-                            })
-                        }
-                        {
-                            Boolean(nftsData.results) && nftsData.results.length < 1 && <>
-                                {/* <Text style={{ color: "white", fontSize: 18, marginBottom: 5, fontFamily: "Montserrat-Medium", }}>Recent Activity</Text> */}
-                                <Text style={{ color: "rgba(255,255,255,.5)", fontSize: 15, textAlign: "center", marginTop: 15, fontFamily: "Montserrat-Medium", }}>Nothing to show now</Text>
-                            </>
-                        }
-                        {
-                            Boolean(nftsData.results) && nftsData.count > 10 && Boolean(nftsData.next) &&
-                            <View style={{ height: "100%", alignItems: "center", justifyContent: "center" }}>
-                                <TouchableOpacity
-                                    onPress={() => gettingNextedUserNFTs()}
-                                    // disabled={loading}
-                                    style={{
-                                        backgroundColor: "rgb(99, 102, 241)", display: "flex", alignSelf: "flex-start",
-                                        justifyContent: "center", alignItems: "center", padding: 12.5, paddingVertical: 8, borderRadius: 5, flexDirection: "row",
-                                    }}>
 
-                                    <Text style={{
-                                        color: "white", fontSize: 12,
-                                        fontFamily: "Montserrat-Medium",
-                                    }}>Charger plus <Entypo name="chevron-right" size={12} color="white" /></Text>
-                                </TouchableOpacity>
-                            </View>
-                        }
-                    </ScrollView>
+                    {
+                        !Boolean(nftsData.count) && <>
+                            {/* <Text style={{ color: "white", fontSize: 18, marginBottom: 5, fontFamily: "Montserrat-Medium", }}>Recent Activity</Text> */}
+                            <Text style={{ color: "rgba(255,255,255,.5)", fontSize: 15, textAlign: "center", marginTop: 15, fontFamily: "Montserrat-Medium", }}>Nothing to show now</Text>
+                        </>
+                    }
+                    {
+                        Boolean(nftsData.results) &&
+                        <>
+                            <ScrollView
+                                horizontal
+                                showsHorizontalScrollIndicator={false}
+                                contentContainerStyle={{ paddingHorizontal: 15 }}
+                                style={{ width: "100%", height: 370 }}>
+                                {
+                                    Boolean(nftsData.results) && nftsData.results.map((item) => {
+                                        return <NFTViewer callActionView={() => {
+                                            let sendedData: NftTypesValues = {
+                                                id: item.id,
+                                                title: item.title,
+                                                description: item.description,
+                                                owner_id: item.owner,
+                                                image: item.image,
+                                                price: item.price,
+                                                categories_trending: item.categories_trending,
+                                                sales_history: item.sales_history,
+                                            }
+                                            sendedData && nFTContext?.setNftData(sendedData)
+                                            swipeUpDownRef.current.showFull()
+                                        }} data={item} key={item.id} />
+                                    })
+                                }
+                                {
+                                    Boolean(nftsData.results) && nftsData.count > 10 && Boolean(nftsData.next) &&
+                                    <View style={{ height: "100%", alignItems: "center", justifyContent: "center" }}>
+                                        <TouchableOpacity
+                                            onPress={() => gettingNextedUserNFTs()}
+                                            // disabled={loading}
+                                            style={{
+                                                backgroundColor: "rgb(99, 102, 241)", display: "flex", alignSelf: "flex-start",
+                                                justifyContent: "center", alignItems: "center", padding: 12.5, paddingVertical: 8, borderRadius: 5, flexDirection: "row",
+                                            }}>
+
+                                            <Text style={{
+                                                color: "white", fontSize: 12,
+                                                fontFamily: "Montserrat-Medium",
+                                            }}>Charger plus <Entypo name="chevron-right" size={12} color="white" /></Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                }
+                            </ScrollView>
+                        </>
+                    }
                     {/* {
                         !(Object.keys(data).length === 0) &&
                         <View style={{ flexDirection: "row", marginVertical: 15, alignItems: "center", justifyContent: "center", gap: 10 }}>

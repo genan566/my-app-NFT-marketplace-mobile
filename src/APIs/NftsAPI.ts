@@ -2,7 +2,21 @@ import { api_url } from "./APIRoutes";
 
 export class NftsAPI {
 
-    async get_all_nfts(page = 1) {
+    async get_all_nfts(page = 1, user?: string, token?: string) {
+        if (user && token) {
+            return fetch(
+                api_url(`core_nfts/?page=${page}&user=true`),
+                {
+                    method: "GET",
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': "Token " + JSON.parse(token),
+                    },
+                }
+            )
+                .then((js) => js.ok && js.json())
+        }
         return fetch(
             api_url(`core_nfts/?page=${page}`),
             {
