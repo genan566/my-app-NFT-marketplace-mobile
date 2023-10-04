@@ -33,7 +33,6 @@ const userAssignesNftHooks = (): {
                 setLoadingData(false)
                 setnftsData(data)
             })
-
     }
 
     const prefixedPaginate = (it: number) => {
@@ -46,6 +45,8 @@ const userAssignesNftHooks = (): {
                 setLoadingData(false)
                 setnftsData(data)
             })
+
+
     }
 
     const initial_fetching_nfts = () => {

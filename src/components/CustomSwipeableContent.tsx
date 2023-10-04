@@ -1,4 +1,4 @@
-import { TouchableOpacity, View, Text, ScrollView, Image, TouchableHighlight, Dimensions } from "react-native"
+import { TouchableOpacity, View, Text, ScrollView, TouchableHighlight, Dimensions } from "react-native"
 import React, { useRef, useState } from 'react'
 import RootComponent from "./RootComponent"
 import { Icon } from "@ui-kitten/components"
@@ -17,6 +17,7 @@ import { SaleHistory } from "../types/SaleHistoryType"
 import { UserRetrieveInterface } from "../types/UserRetrieveTypes"
 import { CategoriesTrendingAPI } from "../APIs/CategoriesTrending"
 import { CategoriesTrending } from "../types/CategorieTrendingType"
+import { Image } from "expo-image"
 const WIDTH = Dimensions.get("screen").width;
 const HEIGHT = Dimensions.get("screen").height;
 
@@ -232,9 +233,9 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                                         <TouchableOpacity
                                             style={{
                                                 paddingHorizontal: 20, backgroundColor: "transparent",
-                                                borderColor: "rgb(99, 102, 241)", borderWidth: 1, paddingVertical: 10, borderRadius: 50, marginRight: 10, marginTop: 10
+                                                borderColor: it.name === "Not Disponible" ? "red" : "rgb(99, 102, 241)", borderWidth: 1, paddingVertical: 10, borderRadius: 50, marginRight: 10, marginTop: 10
                                             }}>
-                                            <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white" }}>{it.name}</Text>
+                                            <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: it.name === "Not Disponible" ? "red" : "white" }}>{it.name}</Text>
                                         </TouchableOpacity>
                                     </TouchableHighlight>
                                 )
@@ -256,7 +257,7 @@ const ViewHiddenOfNFt = ({ callAction }: { callAction: () => void }) => {
                                     source={require("../../assets/images/1.png")}
                                     // placeholder={blurhash}
                                     // contentFit="cover"
-                                    contentFit='center'
+                                    
                                 // transition={1000}
                                 />
                             </TouchableHighlight>

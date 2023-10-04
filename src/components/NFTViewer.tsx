@@ -189,9 +189,9 @@ const NFTViewer = ({ data, callActionView }: { data: any, callActionView: () => 
                                         <TouchableOpacity
                                             style={{
                                                 paddingHorizontal: 20, backgroundColor: "transparent",
-                                                borderColor: "rgb(99, 102, 241)", borderWidth: 1, paddingVertical: 8, borderRadius: 50, marginRight: 10, marginTop: 10
+                                                borderColor: it.name === "Not Disponible" ? "red" : "rgb(99, 102, 241)", borderWidth: 1, paddingVertical: 8, borderRadius: 50, marginRight: 10, marginTop: 10
                                             }}>
-                                            <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: "white", fontSize: 14 }}>{it.name}</Text>
+                                            <Text style={{ fontFamily: loaded && "Montserrat-SemiBold", color: it.name === "Not Disponible" ? "red" : "white", fontSize: 14 }}>{it.name}</Text>
                                         </TouchableOpacity>
                                     )
                                 })
